@@ -1,0 +1,220 @@
+/* --- ScoreTable Component CSS --- */
+
+.table-container.stats-box {
+  background: rgba(10, 10, 25, 0.8);
+  border: 1px solid rgba(188, 19, 254, 0.6);
+  border-radius: 20px;
+  padding: 30px;
+  box-shadow:
+    0 0 15px rgba(188, 19, 254, 0.3),
+    inset 0 0 10px rgba(188, 19, 254, 0.1);
+  position: relative;
+  overflow: hidden;
+}
+
+.table-container.stats-box::before {
+  display: none;
+}
+
+.table-container h3 {
+  color: transparent;
+  font-size: 1rem;
+  font-style: italic;
+  letter-spacing: 3px;
+  margin-bottom: 25px;
+  text-transform: uppercase;
+  -webkit-text-stroke: 1px #bc13fe;
+  text-shadow:
+    0 0 8px rgba(188, 19, 254, 0.6),
+    0 0 15px rgba(138, 43, 226, 0.4);
+  padding-left: 15px;
+}
+
+.table-container table {
+  width: 100%;
+  border-collapse: collapse;
+  background: rgba(255, 255, 255, 0.02);
+  border-radius: 10px;
+  border: 1px solid rgba(188, 19, 254, 0.45);
+}
+
+.table-container th {
+  background: rgba(188, 19, 254, 0.15);
+  color: #fff;
+  padding: 15px;
+  text-align: center;
+  text-transform: uppercase;
+  font-size: 0.8rem;
+  border-bottom: 2px solid #bc13fe;
+  border-left: 1px solid rgba(188, 19, 254, 0.45);
+}
+
+.table-container td {
+  padding: 15px;
+  border-bottom: 1px solid rgba(188, 19, 254, 0.35);
+  font-size: 1rem;
+  color: #e0e0e0;
+  text-align: center;
+  border-left: 1px solid rgba(188, 19, 254, 0.35);
+}
+
+.table-container th:first-child,
+.table-container td:first-child {
+  border-left: none;
+}
+
+.table-scroll {
+  overflow: visible;
+}
+
+.sort-button {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  text-transform: inherit;
+  cursor: pointer;
+}
+
+.sort-button:hover {
+  color: #bc13fe;
+}
+
+.sort-button.active {
+  color: #bc13fe;
+}
+
+.sort-indicator {
+  display: inline-flex;
+  flex-direction: column;
+  gap: 1px;
+  margin-left: 4px;
+  vertical-align: middle;
+}
+
+.sort-arrow-up,
+.sort-arrow-down {
+  width: 0;
+  height: 0;
+  border-left: 4px solid transparent;
+  border-right: 4px solid transparent;
+}
+
+.sort-arrow-up {
+  border-bottom: 5px solid rgba(188, 19, 254, 0.35);
+}
+
+.sort-arrow-down {
+  border-top: 5px solid rgba(188, 19, 254, 0.35);
+}
+
+.sort-indicator.asc .sort-arrow-up {
+  border-bottom-color: #bc13fe;
+}
+
+.sort-indicator.desc .sort-arrow-down {
+  border-top-color: #bc13fe;
+}
+
+.empty-cell {
+  text-align: center;
+  padding: 20px !important;
+  color: #666 !important;
+}
+
+.score-value {
+  color: #bc13fe !important;
+  font-weight: bold;
+}
+
+.table-container tr:last-child td {
+  border-bottom: none;
+}
+
+.table-container tbody tr {
+  border-bottom: 1px solid rgba(188, 19, 254, 0.35);
+}
+
+.pagination-controls {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 10px;
+  margin-top: 20px;
+  padding-right: 10px;
+  white-space: nowrap;
+}
+
+.pagination-controls button {
+  background: rgba(188, 19, 254, 0.1);
+  border: 1px solid #bc13fe;
+  color: #fff;
+  padding: 8px 25px;
+  cursor: pointer;
+  font-family: "Arial Black", sans-serif;
+  font-size: 0.7rem;
+  letter-spacing: 1px;
+  clip-path: polygon(10% 0%, 100% 0%, 90% 100%, 0% 100%);
+  transition: all 0.3s ease;
+}
+
+.pagination-controls button:hover:not(:disabled) {
+  background: #bc13fe;
+  box-shadow: 0 0 15px #bc13fe;
+  color: #000;
+}
+
+.pagination-controls button:disabled {
+  opacity: 0.2;
+  cursor: not-allowed;
+  border-color: #666;
+}
+
+.page-info {
+  color: #fff;
+  font-size: 0.75rem;
+  font-family: "Montserrat", sans-serif;
+  margin: 0 5px;
+  min-width: max-content;
+}
+
+@media (max-width: 600px) {
+  .table-container.stats-box {
+    padding: 18px 8px;
+  }
+
+  .table-container h3 {
+    padding-left: 4px;
+    font-size: 0.85rem;
+    letter-spacing: 2px;
+  }
+
+  .table-container th,
+  .table-container td {
+    padding: 9px 4px;
+    font-size: 0.65rem;
+  }
+
+  .sort-button {
+    gap: 2px;
+    font-size: 0.65rem;
+  }
+
+  .sort-indicator {
+    margin-left: 1px;
+  }
+
+  .pagination-controls {
+    gap: 5px;
+    padding-right: 0;
+  }
+
+  .pagination-controls button {
+    padding: 7px 9px;
+    font-size: 0.58rem;
+  }
+}

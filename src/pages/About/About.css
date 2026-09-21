@@ -1,0 +1,129 @@
+.about-page {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-height: 100vh;
+}
+
+.about-page .main-title {
+  margin-bottom: 70px;
+}
+
+.profile-img {
+  width: 150px;
+  height: 150px;
+  border-radius: 50%;
+  object-fit: cover;
+  margin: 0 auto 20px auto;
+  display: block;
+  border: 3px solid rgba(255, 255, 255, 0.2);
+  box-shadow: 0 0 20px rgba(188, 19, 254, 0.4);
+}
+
+.about-header-title {
+  text-transform: uppercase;
+  font-style: italic;
+  text-align: center;
+  color: #fff;
+  font-size: clamp(1.5rem, 4vw, 2.25rem);
+  letter-spacing: clamp(1px, 0.5vw, 3px);
+  line-height: 1.1;
+  margin: 0 0 10px;
+  text-shadow:
+    0 0 8px #bc13fe,
+    0 0 16px #8a2be2,
+    0 0 28px #8a2be2;
+}
+
+.subtitle {
+  text-transform: uppercase;
+  font-style: italic;
+  text-align: center;
+  color: transparent;
+  font-size: clamp(0.75rem, 2.1vw, 1.2rem);
+  letter-spacing: clamp(1px, 0.35vw, 2px);
+  line-height: 1.25;
+  margin: 0 0 30px;
+  -webkit-text-stroke: 1px #bc13fe;
+  text-shadow:
+    0 0 6px rgba(188, 19, 254, 0.6),
+    0 0 12px rgba(138, 43, 226, 0.4);
+}
+
+.personal-story-section p {
+  color: #b3b3b3;
+  font-size: 1.1rem;
+  line-height: 1.6;
+  margin: 0 0 15px;
+}
+
+.quote-card {
+  background: rgba(0, 0, 0, 0.2);
+  border-left: 4px solid #bc13fe;
+  padding: 15px;
+  margin: 20px 0;
+  border-radius: 0 8px 8px 0;
+}
+
+.quote p {
+  color: #e5e7eb;
+  font-style: italic;
+  margin-bottom: 5px;
+}
+
+.quote span {
+  color: #9ca3af;
+  font-size: 0.85rem;
+}
+
+/* פריסת הסרטונים זה לצד זה והקטנת הגובה שלהם למראה אלגנטי יותר */
+.videos-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+  margin-top: 30px;
+}
+
+/* שליטה על הגובה של כל סרטון בתוך הגריד במחשב */
+.videos-grid .video-container iframe {
+  height: 240px; /* הוקטן מ-400px כדי לא להשתלט על העמוד */
+}
+
+@media (max-width: 900px) {
+  .videos-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 768px) {
+  .about-page .main-title {
+    margin-bottom: 30px;
+  }
+
+  .profile-img {
+    width: 110px;
+    height: 110px;
+  }
+
+  .about-header-title {
+    font-size: 1.5rem;
+  }
+
+  .subtitle {
+    font-size: 1rem;
+  }
+
+  .personal-story-section p {
+    font-size: 1rem;
+    line-height: 1.5;
+  }
+
+  .videos-grid {
+    gap: 14px;
+    margin-top: 20px;
+  }
+
+  .videos-grid .video-container iframe {
+    height: 190px;
+  }
+}

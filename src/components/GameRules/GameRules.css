@@ -1,0 +1,70 @@
+/* Rules Container */
+.rules-container {
+  background: rgba(26, 26, 46, 0.9);
+  border: 2px solid #bc13fe;
+  border-radius: 16px;
+  box-shadow: 0 0 15px rgba(188, 19, 254, 0.3);
+  padding: 16px 20px;
+  margin: 12px auto;
+  max-width: 450px;
+  width: 100%;
+  box-sizing: border-box;
+  text-align: left;
+}
+
+.rules-container h3 {
+  font-family: "Arial Black", sans-serif;
+  color: #fff;
+  text-transform: uppercase;
+  font-style: italic;
+  font-size: 1.1rem;
+  text-shadow: 0 0 8px #bc13fe;
+  margin-bottom: 10px;
+  text-align: center;
+}
+
+.rules-container ul {
+  list-style: none;
+  padding: 0;
+  margin-bottom: 10px;
+}
+
+.rules-container li {
+  color: #ffffff;
+  margin-bottom: 8px;
+  font-size: 0.92rem;
+  padding-left: 10px;
+  border-left: 3px solid #00f2ff;
+  line-height: 1.3;
+  text-shadow: 0 0 4px rgba(0, 242, 255, 0.5);
+  white-space: nowrap;
+}
+
+.warning-text {
+  display: flex;
+  align-items: center;
+  font-weight: 800;
+  margin-top: 8px;
+  text-transform: uppercase;
+  font-size: 0.75rem; /* הוקטן כדי למנוע חריגה מהמסגרת */
+  letter-spacing: 0.5px;
+  white-space: nowrap;
+}
+
+.red-warn {
+  color: #ff0055;
+  text-shadow: 0 0 6px #ff0055;
+}
+
+.orange-warn {
+  color: #ffaa00;
+  text-shadow: 0 0 6px #ffaa00;
+}
+
+@media (max-width: 480px) {
+  .rules-container li,
+  .warning-text {
+    white-space: normal;
+    font-size: 0.7rem;
+  }
+}

@@ -1,0 +1,29 @@
+.purple-btn {
+  width: 100%;
+  padding: 15px;
+  margin-top: 15px;
+  margin-bottom: 10px;
+  background: linear-gradient(135deg, #4b0082 0%, #bc13fe 50%, #4b0082 100%);
+  background-size: 200% auto;
+  border: none;
+  color: white;
+  font-weight: bold;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  cursor: pointer;
+  transition: 0.4s;
+  clip-path: polygon(8% 0, 100% 0, 92% 100%, 0% 100%);
+}
+
+.purple-btn:hover {
+  background-position: right center;
+  box-shadow: 0 0 20px #bc13fe;
+  transform: scale(1.03) skewX(-2deg);
+}
+
+.purple-btn:active {
+  transform: scale(0.92) skewX(-5deg);
+  filter: brightness(1.5);
+  box-shadow: 0 0 40px #bc13fe;
+  transition: 0.05s;
+}

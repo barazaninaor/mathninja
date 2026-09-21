@@ -1,0 +1,247 @@
+/* Game Main Container - Thick Black Gap Double Border Style with 3D & Centered */
+.container.game-main-container {
+  background: rgba(10, 10, 25, 0.95);
+  border: 2px solid #bc13fe; /* קו פנימי עדין */
+  outline: 2px solid #bc13fe; /* קו חיצוני עדין */
+  outline-offset: 10px; /* רווח שחור רחב ועבה במיוחד בין הקווים */
+  border-radius: 24px;
+  max-width: 420px;
+  width: 90%;
+  height: 660px;
+  min-height: 660px;
+  margin: 92px 0 0;
+  padding: 20px;
+  box-sizing: border-box; /* מבטיח שה-padding לא יחרוג מהרוחב */
+  display: flex;
+  flex-direction: column;
+  align-items: center; /* ממרכז את כל הילדים אופקית באופן מושלם */
+  box-shadow:
+    0 10px 25px rgba(0, 0, 0, 0.8),
+    0 0 25px rgba(188, 19, 254, 0.4),
+    inset 0 0 15px rgba(188, 19, 254, 0.2);
+  position: relative;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.ready-controls {
+  position: absolute;
+  right: 20px;
+  bottom: 20px;
+  left: 20px;
+  display: flex;
+  justify-content: center;
+}
+
+.ready-controls .ready-btn,
+.bottom-controls .secondary-btn {
+  width: 100%;
+  max-width: 400px;
+}
+
+#start-screen {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  width: 100%;
+}
+
+/* Rules Container inside Arcade Box - Centered & Aligned */
+.rules-container {
+  background: rgba(26, 26, 46, 0.95);
+  border: 2px solid #bc13fe;
+  border-radius: 14px;
+  box-shadow:
+    0 6px 15px rgba(0, 0, 0, 0.6),
+    0 0 15px rgba(188, 19, 254, 0.3);
+  padding: 12px 15px;
+  margin: 0 0 8px 0;
+  width: 100%;
+  box-sizing: border-box; /* מונע מהתיבה לחרוג הצידה */
+  text-align: left;
+}
+
+.rules-container h3 {
+  font-family: "Courier New", Courier, monospace;
+  color: #fff;
+  text-transform: uppercase;
+  font-style: italic;
+  font-size: 1rem;
+  text-shadow: 0 0 8px #bc13fe;
+  margin-bottom: 8px;
+  text-align: center;
+}
+
+.rules-container ul {
+  list-style: none;
+  padding: 0;
+  margin-bottom: 6px;
+}
+
+.rules-container li {
+  color: #ffffff;
+  margin-bottom: 6px;
+  font-size: 0.85rem;
+  padding-left: 8px;
+  border-left: 3px solid #00f2ff;
+  line-height: 1.2;
+  text-shadow: 0 0 4px rgba(0, 242, 255, 0.5);
+  white-space: nowrap;
+}
+
+.warning-text {
+  display: flex;
+  align-items: center;
+  font-weight: 800;
+  margin-top: 6px;
+  text-transform: uppercase;
+  font-size: 0.8rem;
+  letter-spacing: 0.5px;
+  white-space: nowrap;
+}
+
+.red-warn {
+  color: #ff0055;
+  text-shadow: 0 0 6px #ff0055;
+}
+
+.orange-warn {
+  color: #ffaa00;
+  text-shadow: 0 0 6px #ffaa00;
+}
+
+/* Difficulty Options Container */
+.difficulty-options {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  width: 100%;
+  margin: 0 auto;
+}
+
+.diff-btn {
+  width: 100%;
+  padding: 10px;
+  background: rgba(188, 19, 254, 0.05);
+  border: 2px solid #bc13fe;
+  color: white;
+  font-family: "Courier New", Courier, monospace;
+  font-size: 0.9rem;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
+  box-sizing: border-box;
+}
+
+.diff-btn:hover {
+  background: rgba(188, 19, 254, 0.2);
+  box-shadow:
+    0 0 15px #bc13fe,
+    0 6px 12px rgba(0, 0, 0, 0.6);
+}
+
+.diff-btn.selected {
+  background: #bc13fe;
+  color: black;
+  box-shadow:
+    0 0 20px #bc13fe,
+    0 6px 12px rgba(0, 0, 0, 0.6);
+}
+
+/* Numpad & Buttons */
+.numpad {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+  margin-bottom: 15px;
+  width: 100%;
+}
+
+.num-btn {
+  background: #bc13fe;
+  color: #fff;
+  border: none;
+  padding: 10px;
+  font-size: 1.1rem;
+  font-weight: bold;
+  cursor: pointer;
+  border-radius: 8px;
+  transition: all 0.2s ease;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.4);
+}
+
+.num-btn:active {
+  transform: scale(0.9);
+  filter: brightness(1.2);
+}
+
+.action-btn,
+.secondary-btn {
+  width: 100%;
+  background: #bc13fe;
+  color: #fff;
+  border: 2px solid #bc13fe;
+  padding: 10px 20px;
+  font-weight: bold;
+  text-transform: uppercase;
+  cursor: pointer;
+  letter-spacing: 2px;
+  transition: all 0.3s ease;
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.6);
+  box-sizing: border-box;
+}
+
+.action-btn:hover {
+  background: #fff;
+  color: #000;
+  box-shadow:
+    0 0 15px #bc13fe,
+    0 8px 15px rgba(0, 0, 0, 0.7);
+}
+
+.secondary-btn {
+  background: transparent;
+  color: #bc13fe;
+}
+
+.secondary-btn:hover {
+  background: rgba(188, 19, 254, 0.1);
+  color: #fff;
+}
+
+@media (max-width: 768px) {
+  .container.game-main-container {
+    width: 100%;
+    max-width: 420px;
+    height: auto;
+    min-height: 0;
+    margin: 28px auto 20px;
+    padding: 14px;
+    left: auto;
+    transform: none;
+    outline-offset: 6px;
+    border-radius: 18px;
+  }
+
+  .rules-container {
+    padding: 12px 10px;
+  }
+
+  .rules-container li,
+  .warning-text {
+    white-space: normal;
+    font-size: 0.74rem;
+  }
+
+  .rules-container h3 {
+    font-size: 0.9rem;
+  }
+
+  .ready-controls {
+    position: static;
+    margin-top: 22px;
+  }
+}

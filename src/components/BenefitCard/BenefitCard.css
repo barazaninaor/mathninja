@@ -1,0 +1,49 @@
+.benefit-item {
+  background: rgba(18, 18, 31, 0.65);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  padding: 30px;
+  border: 1px solid rgba(188, 19, 254, 0.4);
+  border-radius: 12px;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+}
+
+.benefit-item:hover {
+  background: rgba(188, 19, 254, 0.08);
+  border-color: #bc13fe;
+  box-shadow: 0 0 25px rgba(188, 19, 254, 0.3);
+  transform: translateY(-5px);
+}
+
+.benefit-title {
+  font-size: 1.4rem;
+  color: #fff;
+  text-transform: uppercase;
+  margin-bottom: 15px;
+  letter-spacing: 1px;
+  text-shadow: 0 0 10px rgba(188, 19, 254, 0.5);
+}
+
+.benefit-text {
+  color: #b3b3b3;
+  font-size: 1.1rem;
+  line-height: 1.6;
+  margin: 0;
+}
+
+@media (max-width: 768px) {
+  .benefit-item {
+    padding: 20px;
+  }
+
+  .benefit-title {
+    font-size: 1.2rem;
+    margin-bottom: 10px;
+  }
+
+  .benefit-text {
+    font-size: 1rem;
+    line-height: 1.5;
+  }
+}

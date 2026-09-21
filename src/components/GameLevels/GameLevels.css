@@ -1,0 +1,34 @@
+.difficulty-options {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  width: 100%;
+  max-width: 400px;
+  margin: 0 auto;
+}
+
+.diff-btn {
+  width: 100%;
+  padding: 10px;
+  background: transparent;
+  border: 2px solid #bc13fe;
+  color: white;
+  font-family: "Courier New", Courier, monospace;
+  font-size: 0.95rem;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+}
+
+.diff-btn:hover {
+  background: rgba(188, 19, 254, 0.1);
+  box-shadow: 0 0 15px #bc13fe;
+}
+
+.diff-btn.selected {
+  background: #bc13fe;
+  color: black;
+  box-shadow: 0 0 20px #bc13fe;
+}

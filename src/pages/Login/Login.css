@@ -1,0 +1,172 @@
+/* --- Login Component CSS --- */
+
+.login-page {
+  min-height: calc(100vh - 110px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px 20px;
+  box-sizing: border-box;
+}
+
+.login-container {
+  background: rgba(10, 10, 25, 0.85);
+  border: 1px solid rgba(188, 19, 254, 0.5);
+  border-radius: 15px;
+  max-width: 420px;
+  width: 100%;
+  margin: 0 auto;
+  padding: 24px;
+  box-shadow:
+    0 0 20px rgba(188, 19, 254, 0.25),
+    inset 0 0 10px rgba(188, 19, 254, 0.1);
+}
+
+.login-container h2 {
+  text-align: center;
+  font-size: 1.8rem;
+  font-weight: 900;
+  color: #fff;
+  margin: 0 0 20px;
+  letter-spacing: 3px;
+  text-shadow: 0 0 10px #bc13fe;
+}
+
+.login-container div {
+  margin-bottom: 12px;
+}
+
+.login-container label {
+  display: block;
+  width: 85%;
+  max-width: 330px;
+  margin: 0 auto 5px;
+  font-size: 0.85rem;
+  color: #aaa;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.login-container input {
+  display: block;
+  width: 85%;
+  max-width: 330px;
+  margin: 0 auto;
+  box-sizing: border-box;
+  background: rgba(15, 10, 30, 0.9);
+  border: 1px solid #bc13fe;
+  color: #fff;
+  padding: 10px 12px;
+  border-radius: 6px;
+  font-size: 0.95rem;
+  outline: none;
+  transition: all 0.3s ease;
+}
+
+.login-container input:focus {
+  border-color: #00d4ff;
+  box-shadow: 0 0 10px rgba(0, 212, 255, 0.5);
+}
+
+.login-container button {
+  display: block;
+  width: 60%;
+  margin: 10px auto 0;
+  background: #bc13fe;
+  color: #000;
+  border: none;
+  padding: 11px 12px;
+  font-weight: 900;
+  font-size: 0.95rem;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  border-radius: 6px;
+  cursor: pointer;
+  box-shadow: 0 0 15px rgba(188, 19, 254, 0.6);
+  transition: all 0.3s ease;
+}
+
+.login-container button:hover {
+  background: #d14df9;
+  box-shadow: 0 0 25px #bc13fe;
+}
+
+#errorMessage {
+  color: #ff4b2b;
+  font-size: 14px;
+  margin-top: 10px;
+  min-height: 1.2em;
+}
+
+#signUpSection {
+  text-align: center;
+  margin-top: 25px;
+  border-top: 1px solid rgba(188, 19, 254, 0.2);
+  padding-top: 20px;
+}
+
+#signUpSection h3 {
+  font-size: 0.85rem;
+  color: #aaa;
+  letter-spacing: 1px;
+  line-height: 1.4;
+}
+
+/* --- Loading Overlay Styles --- */
+#loadingOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.85);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 99999;
+}
+
+.loader-text {
+  color: #bc13fe;
+  font-size: 2rem;
+  font-weight: 900;
+  letter-spacing: 4px;
+  text-shadow: 0 0 15px #bc13fe;
+  animation: pulse 1.5s infinite;
+}
+
+@keyframes pulse {
+  0% {
+    opacity: 0.4;
+  }
+  50% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0.4;
+  }
+}
+
+@media (max-width: 480px) {
+  .login-container {
+    padding: 18px 12px;
+  }
+
+  .login-container input,
+  .login-container label {
+    width: 92%;
+  }
+
+  .login-container button {
+    width: 72%;
+  }
+}
+
+/* Autofill Fix */
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus {
+  -webkit-box-shadow: 0 0 0px 1000px #0f0a1e inset !important;
+  -webkit-text-fill-color: #f0f0f0 !important;
+  transition: background-color 5000s ease-in-out 0s;
+}

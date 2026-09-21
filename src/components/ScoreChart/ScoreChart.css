@@ -1,0 +1,57 @@
+/* --- ScoreChart Component CSS --- */
+
+.chart-container.stats-box {
+  background: rgba(10, 10, 25, 0.8);
+  border: 1px solid rgba(188, 19, 254, 0.6);
+  border-radius: 20px;
+  padding: 30px;
+  box-shadow:
+    0 0 15px rgba(188, 19, 254, 0.3),
+    inset 0 0 10px rgba(188, 19, 254, 0.1);
+  position: relative;
+  overflow: hidden;
+}
+
+.chart-container.stats-box::before {
+  display: none;
+}
+
+.chart-container h3 {
+  color: transparent;
+  font-size: 1rem;
+  font-style: italic;
+  letter-spacing: 3px;
+  margin-bottom: 25px;
+  text-transform: uppercase;
+  -webkit-text-stroke: 1px #bc13fe;
+  text-shadow:
+    0 0 8px rgba(188, 19, 254, 0.6),
+    0 0 15px rgba(138, 43, 226, 0.4);
+  padding-left: 15px;
+}
+
+.chart-container canvas {
+  width: 100% !important;
+  max-height: 350px;
+}
+
+.chart-area {
+  height: 350px;
+  position: relative;
+}
+
+@media (max-width: 600px) {
+  .chart-container.stats-box {
+    padding: 18px 10px;
+  }
+
+  .chart-container h3 {
+    padding-left: 4px;
+    font-size: 0.85rem;
+    letter-spacing: 2px;
+  }
+
+  .chart-area {
+    height: 240px;
+  }
+}

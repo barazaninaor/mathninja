@@ -1,0 +1,21 @@
+body {
+  margin: 0;
+  padding: 50px 20px 60px 20px;
+  font-family: "Segoe UI", "Impact", sans-serif;
+  background: radial-gradient(circle, #2a0a4d 0%, #05010a 100%);
+  min-height: 100vh;
+  color: white;
+  overflow-x: hidden;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+@media (max-width: 768px) {
+  body {
+    padding: 92px 12px 32px;
+  }
+}

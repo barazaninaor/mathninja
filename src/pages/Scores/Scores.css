@@ -1,0 +1,175 @@
+/* --- ScoresPage Component CSS --- */
+
+.stats-dashboard {
+  max-width: 1200px;
+  width: 95%;
+  margin: 40px auto;
+}
+
+.stats-header {
+  text-align: center;
+  margin-bottom: 50px;
+}
+
+.level-selector {
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+  margin-top: 20px;
+}
+
+.level-btn {
+  background: rgba(188, 19, 254, 0.1);
+  border: 1px solid #bc13fe;
+  color: #fff;
+  padding: 12px 35px;
+  cursor: pointer;
+  font-family: "Arial Black", sans-serif;
+  font-size: 0.85rem;
+  letter-spacing: 2px;
+  clip-path: polygon(10% 0%, 100% 0%, 90% 100%, 0% 100%);
+  transition: all 0.3s ease;
+  outline: none;
+}
+
+.level-btn.active {
+  background: #bc13fe;
+  box-shadow: 0 0 20px #bc13fe;
+  color: #000;
+}
+
+.level-btn:hover:not(.active) {
+  background: rgba(188, 19, 254, 0.3);
+  box-shadow: 0 0 10px rgba(188, 19, 254, 0.2);
+}
+
+.time-selector {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 15px;
+  margin-top: 25px;
+  padding: 10px;
+  flex-wrap: nowrap;
+}
+
+.preset-filters {
+  display: flex;
+  gap: 10px;
+}
+
+.time-btn {
+  background: transparent;
+  border: 1px solid #bc13fe;
+  color: #fff;
+  padding: 6px 15px;
+  cursor: pointer;
+  font-family: inherit;
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  transition: all 0.3s ease;
+  border-radius: 4px;
+  clip-path: none !important;
+}
+
+.time-btn.active,
+.time-btn:hover {
+  background: #bc13fe;
+  box-shadow: 0 0 10px #bc13fe;
+  color: #000;
+}
+
+.custom-date-container {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-left: 10px;
+}
+
+.custom-date-container input[type="date"] {
+  background: rgba(10, 10, 25, 0.9);
+  border: 1px solid #bc13fe;
+  color: #fff;
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-size: 0.8rem;
+  outline: none;
+}
+
+.custom-date-container input[type="date"]:focus {
+  border-color: #bc13fe;
+  box-shadow: 0 0 10px rgba(188, 19, 254, 0.6);
+}
+
+/* Force chart and table to stack vertically */
+.dashboard-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+  width: 100%;
+}
+
+.date-separator {
+  color: #fff;
+  margin: 0 5px;
+}
+
+/* Mobile responsive adjustments */
+@media (max-width: 900px) {
+  .level-selector {
+    flex-wrap: wrap;
+  }
+
+  .level-btn {
+    padding: 10px 20px;
+    font-size: 0.75rem;
+  }
+
+  .time-selector {
+    flex-wrap: wrap;
+  }
+}
+
+@media (max-width: 600px) {
+  .stats-dashboard {
+    width: 100%;
+    margin: 20px auto;
+  }
+
+  .stats-header {
+    margin-bottom: 28px;
+  }
+
+  .level-selector,
+  .preset-filters,
+  .time-selector {
+    gap: 8px;
+  }
+
+  .level-btn {
+    padding: 9px 12px;
+    font-size: 0.68rem;
+    letter-spacing: 1px;
+  }
+
+  .time-selector,
+  .preset-filters {
+    flex-wrap: wrap;
+  }
+
+  .time-btn {
+    padding: 6px 9px;
+    font-size: 0.68rem;
+  }
+
+  .custom-date-container {
+    width: 100%;
+    justify-content: center;
+    margin-left: 0;
+  }
+
+  .custom-date-container input[type="date"] {
+    min-width: 0;
+    width: 42%;
+  }
+}
