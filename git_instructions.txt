@@ -1,0 +1,4 @@
+git add .
+git commit -m "Update code and features"
+git push origin main
+npm run deploy

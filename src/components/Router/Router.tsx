@@ -10,6 +10,7 @@ import Login from "../../pages/Login/Login";
 
 /**
  * Router component for managing application navigation.
+ * Automatically adjusts the basename depending on whether the app is running locally or in production (GitHub Pages).
  */
 export function Router() {
   return (

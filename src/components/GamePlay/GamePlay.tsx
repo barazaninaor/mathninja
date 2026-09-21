@@ -151,7 +151,7 @@ export default function GamePlay({
           <button
             className="action-btn finish-btn"
             id="finishBtn"
-            onClick={finishGame}
+            onClick={() => finishGame()}
           >
             SHOW MY SCORE
           </button>
