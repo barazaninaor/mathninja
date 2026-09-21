@@ -226,10 +226,10 @@
   .container.game-main-container {
     width: 100%;
     max-width: 420px;
-    height: calc(100dvh - 123px);
-    min-height: 0;
+    height: 660px;
+    min-height: 660px;
     margin: 25px auto 0;
-    padding: 14px;
+    padding: 8px;
     left: auto;
     transform: none;
     outline-offset: 6px;
@@ -251,19 +251,19 @@
   }
 
   .ready-controls {
-    position: static;
-    margin-top: 22px;
+    position: absolute;
+    right: 20px;
+    bottom: 20px;
+    left: 20px;
+    margin-top: 0;
   }
 }
 
 @media (max-width: 480px) and (max-height: 700px) {
-  body:has(.game-main-container) {
-    overflow-y: hidden;
-  }
-
   .container.game-main-container {
-    height: calc(100dvh - 110px);
-    margin-top: 6px;
+    height: 660px;
+    min-height: 660px;
+    margin-top: 25px;
     padding: 8px;
     outline-offset: 4px;
   }
