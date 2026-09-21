@@ -260,11 +260,21 @@
 }
 
 @media (max-width: 480px) and (max-height: 700px) {
-  .container.game-main-container {
-    height: 460px;
-    min-height: 460px;
+  .container.game-main-container:has(#start-screen) {
+    height: auto;
+    min-height: 0;
     margin-top: 25px;
     padding: 8px;
     outline-offset: 4px;
+  }
+
+  .container.game-main-container:has(#start-screen) .ready-controls {
+    position: static;
+    margin-top: 22px;
+  }
+
+  .container.game-main-container:has(#game-play-screen) {
+    height: 500px;
+    min-height: 500px;
   }
 }
