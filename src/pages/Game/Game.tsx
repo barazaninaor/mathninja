@@ -203,7 +203,11 @@ export default function Game() {
           />
 
           <div className="ready-controls">
-            <button className="action-btn ready-btn" onClick={startGame}>
+            <button
+              className="action-btn ready-btn"
+              data-label="I'M READY!"
+              onClick={startGame}
+            >
               I'M READY!
             </button>
           </div>

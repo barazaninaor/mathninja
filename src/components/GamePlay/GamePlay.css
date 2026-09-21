@@ -137,6 +137,8 @@
 
 /* 3D Prominent Number Buttons with Subtle Purple Border */
 .num-btn {
+  position: relative;
+  isolation: isolate;
   background: linear-gradient(to bottom, #222222, #0d0d0d);
   border: 1.5px solid #bc13fe; /* Subtle purple border */
   color: #fff;
@@ -152,6 +154,53 @@
     inset 0 1px 0 rgba(188, 19, 254, 0.3),
     0 6px 0 #000000,
     0 8px 10px rgba(0, 0, 0, 0.6);
+}
+
+.num-btn::before {
+  content: "";
+  position: absolute;
+  z-index: 2;
+  inset: -4px;
+  border-radius: 13px;
+  padding: 3px;
+  background: conic-gradient(
+    from 0deg,
+    #7a0fa8,
+    #d94dff 25deg,
+    #9d18d0 75deg,
+    #ee8cff 125deg,
+    #8c12bd 180deg,
+    #d94dff 235deg,
+    #7a0fa8 290deg,
+    #bc13fe 335deg,
+    #7a0fa8
+  );
+  -webkit-mask:
+    linear-gradient(#000 0 0) content-box,
+    linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  pointer-events: none;
+  filter: drop-shadow(0 0 3px #bc13fe)
+    drop-shadow(0 0 7px rgba(188, 19, 254, 0.8));
+  opacity: 0;
+  transition: opacity 0s;
+  animation: num-btn-ring 1.4s linear infinite;
+}
+
+.num-btn:focus {
+  outline: none !important;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.num-btn:active::before {
+  opacity: 1;
+}
+
+@keyframes num-btn-ring {
+  to {
+    transform: rotate(360deg);
+  }
 }
 
 .num-btn:hover {
@@ -321,6 +370,64 @@
       inset 0 1px 0 rgba(188, 19, 254, 0.3),
       0 6px 0 #000000,
       0 8px 10px rgba(0, 0, 0, 0.6);
+  }
+}
+
+/* Full-button neon frame, matching the arcade key effect. */
+.num-btn:active,
+.action-btn:active {
+  overflow: hidden;
+  background: #000;
+  color: transparent;
+  outline: none !important;
+}
+
+.num-btn:active::before,
+.action-btn:active::before {
+  content: "";
+  position: absolute;
+  z-index: 0;
+  display: block;
+  width: 250%;
+  height: 500%;
+  inset: -200% -75%;
+  border-radius: inherit;
+  -webkit-mask: none;
+  mask: none;
+  filter: none;
+  opacity: 1;
+  background: conic-gradient(
+    transparent,
+    transparent 35%,
+    #7a0fa8 45%,
+    #d94dff 50%,
+    #bc13fe 55%,
+    transparent 65%
+  );
+  opacity: 1;
+  animation: rotate-purple-frame 0.9s linear infinite;
+}
+
+.num-btn:active::after,
+.action-btn:active::after {
+  content: attr(data-label);
+  position: absolute;
+  z-index: 1;
+  inset: 3px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 7px;
+  background: #000;
+  color: #fff;
+  font: inherit;
+  letter-spacing: inherit;
+  pointer-events: none;
+}
+
+@keyframes rotate-purple-frame {
+  to {
+    transform: rotate(360deg);
   }
 }
 

@@ -109,40 +109,48 @@ export default function GamePlay({
         />
 
         <div id="numpad" className="numpad">
-          <button className="num-btn" onClick={() => typeNum(1)}>
+          <button className="num-btn" data-label="1" onClick={() => typeNum(1)}>
             1
           </button>
-          <button className="num-btn" onClick={() => typeNum(2)}>
+          <button className="num-btn" data-label="2" onClick={() => typeNum(2)}>
             2
           </button>
-          <button className="num-btn" onClick={() => typeNum(3)}>
+          <button className="num-btn" data-label="3" onClick={() => typeNum(3)}>
             3
           </button>
-          <button className="num-btn" onClick={() => typeNum(4)}>
+          <button className="num-btn" data-label="4" onClick={() => typeNum(4)}>
             4
           </button>
-          <button className="num-btn" onClick={() => typeNum(5)}>
+          <button className="num-btn" data-label="5" onClick={() => typeNum(5)}>
             5
           </button>
-          <button className="num-btn" onClick={() => typeNum(6)}>
+          <button className="num-btn" data-label="6" onClick={() => typeNum(6)}>
             6
           </button>
-          <button className="num-btn" onClick={() => typeNum(7)}>
+          <button className="num-btn" data-label="7" onClick={() => typeNum(7)}>
             7
           </button>
-          <button className="num-btn" onClick={() => typeNum(8)}>
+          <button className="num-btn" data-label="8" onClick={() => typeNum(8)}>
             8
           </button>
-          <button className="num-btn" onClick={() => typeNum(9)}>
+          <button className="num-btn" data-label="9" onClick={() => typeNum(9)}>
             9
           </button>
-          <button className="num-btn" onClick={() => typeNum("clear")}>
+          <button
+            className="num-btn"
+            data-label="C"
+            onClick={() => typeNum("clear")}
+          >
             C
           </button>
-          <button className="num-btn" onClick={() => typeNum(0)}>
+          <button className="num-btn" data-label="0" onClick={() => typeNum(0)}>
             0
           </button>
-          <button className="num-btn" onClick={() => typeNum("del")}>
+          <button
+            className="num-btn"
+            data-label="⌫"
+            onClick={() => typeNum("del")}
+          >
             ⌫
           </button>
         </div>
@@ -151,6 +159,7 @@ export default function GamePlay({
           <button
             className="action-btn finish-btn"
             id="finishBtn"
+            data-label="SHOW MY SCORE"
             onClick={() => finishGame()}
           >
             SHOW MY SCORE
@@ -159,6 +168,7 @@ export default function GamePlay({
           <button
             className="action-btn next-btn"
             id="nextBtn"
+            data-label="NEXT"
             onClick={checkAnswer}
           >
             NEXT
