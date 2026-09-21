@@ -13,7 +13,7 @@ import Login from "../../pages/Login/Login";
  */
 export function Router() {
   return (
-    <BrowserRouter>
+    <BrowserRouter basename="/mathninja">
       <Navbar />
       <Routes>
         <Route path="/" element={<Home />} />
