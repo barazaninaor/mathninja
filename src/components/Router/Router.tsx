@@ -1,4 +1,5 @@
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { useEffect } from "react";
+import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
 import { Home } from "../../pages/Home/Home";
 import Game from "../../pages/Game/Game";
 import { About } from "../../pages/About/About";
@@ -8,6 +9,16 @@ import Scores from "../../pages/Scores/Scores";
 import Signup from "../../pages/Signup/Signup";
 import Login from "../../pages/Login/Login";
 
+function ScrollToTop() {
+  const { pathname } = useLocation();
+
+  useEffect(() => {
+    window.scrollTo({ top: 0, left: 0, behavior: "auto" });
+  }, [pathname]);
+
+  return null;
+}
+
 /**
  * Router component for managing application navigation.
  * Automatically adjusts the basename depending on whether the app is running locally or in production (GitHub Pages).
@@ -15,6 +26,7 @@ import Login from "../../pages/Login/Login";
 export function Router() {
   return (
     <BrowserRouter basename="/mathninja">
+      <ScrollToTop />
       <Navbar />
       <Routes>
         <Route path="/" element={<Home />} />
