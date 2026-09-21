@@ -261,8 +261,8 @@
 
 @media (max-width: 480px) and (max-height: 700px) {
   .container.game-main-container {
-    height: 660px;
-    min-height: 660px;
+    height: 460px;
+    min-height: 460px;
     margin-top: 25px;
     padding: 8px;
     outline-offset: 4px;

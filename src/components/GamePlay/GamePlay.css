@@ -259,6 +259,10 @@
     padding-bottom: 40px;
   }
 
+  .feedback-msg {
+    min-height: 40px;
+  }
+
   .flashcard {
     gap: 6px;
     padding: 8px 10px;
