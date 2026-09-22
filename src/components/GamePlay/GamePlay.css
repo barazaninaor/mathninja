@@ -92,13 +92,15 @@
   text-shadow: 0 0 10px rgba(188, 19, 254, 0.5);
 }
 
+/* Perfectly Centered Feedback Message in the Black Gap */
 .feedback-msg {
   flex: 1 1 auto;
-  display: grid;
-  place-items: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   width: 100%;
   min-height: 28px;
-  margin: 0;
+  margin: 0 auto;
   font-weight: bold;
   text-align: center;
   font-size: 1.25rem;
@@ -314,7 +316,7 @@
 
   .feedback-msg {
     min-height: 52px;
-    margin: 6px 0;
+    margin: 6px auto;
   }
 
   .flashcard {
@@ -342,13 +344,13 @@
   }
 
   .numpad {
-    gap: 8px; /* Slightly tightened gap for better button proportions */
+    gap: 8px;
     margin-bottom: 4px;
   }
 
   .num-btn {
-    font-size: 1.1rem; /* Slightly reduced button font size for mobile */
-    padding: 8px 0; /* Reduced button height */
+    font-size: 1.1rem;
+    padding: 8px 0;
   }
 
   .action-btn {
