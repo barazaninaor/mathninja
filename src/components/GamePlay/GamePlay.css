@@ -94,10 +94,11 @@
 
 /* Perfectly Centered Feedback Message in the Black Gap */
 .feedback-msg {
-  flex: none;
-  display: block;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   width: 100%;
-  min-height: 28px;
+  flex: 1 1 auto;
   margin: 0 auto;
   font-weight: bold;
   text-align: center;
@@ -295,8 +296,6 @@
   }
 
   .feedback-msg {
-    flex: none;
-    min-height: 72px;
     font-size: 1rem;
   }
 
@@ -306,15 +305,14 @@
   }
 }
 
-/* Mobile-only optimizations: Slightly smaller keys, balanced spacing, and safe feedback black gap space */
+/* Mobile-only optimizations */
 @media (max-width: 480px) and (max-height: 700px) {
   #game-play-screen {
     padding-bottom: 24px;
   }
 
   .feedback-msg {
-    min-height: 52px;
-    margin: 6px auto;
+    margin: 4px auto;
   }
 
   .flashcard {
@@ -465,11 +463,4 @@
   background: rgba(188, 19, 254, 0.1);
   color: #fff;
   box-shadow: 0 0 8px rgba(188, 19, 254, 0.3);
-}
-
-@media (min-width: 769px) {
-  .feedback-msg {
-    position: relative;
-    top: 13px;
-  }
 }
