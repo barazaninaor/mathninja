@@ -46,17 +46,22 @@ export default function GameEndScreen({
 
         <div className="game-end-actions">
           <button
-            className="action-btn"
+            className="action-btn view-scores-btn"
+            data-label="VIEW SCORES TABLE"
             onClick={onViewStats}
-            style={{ width: "100%", cursor: "pointer" }}
           >
-            VIEW Scores Table
+            VIEW SCORES TABLE
           </button>
         </div>
       </div>
 
-      <div className="game-restart-container">
-        <button className="secondary-btn" onClick={onRestart}>
+      {/* משйתמש בדיוק באותה מחלקה של כפתור ה-I'M READY למטה */}
+      <div className="ready-controls">
+        <button
+          className="action-btn ready-btn"
+          data-label="RESTART"
+          onClick={onRestart}
+        >
           RESTART
         </button>
       </div>

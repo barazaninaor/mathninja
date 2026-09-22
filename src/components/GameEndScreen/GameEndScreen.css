@@ -3,9 +3,10 @@
   display: flex;
   flex-direction: column;
   align-items: center;
+  justify-content: flex-start;
   width: 100%;
   height: 100%;
-  padding-bottom: 60px;
+  padding-bottom: 20px;
   box-sizing: border-box;
 }
 
@@ -18,37 +19,37 @@
   box-sizing: border-box;
   background: rgba(188, 19, 254, 0.05);
   border: 2px solid #bc13fe;
-  padding: 20px;
-  border-radius: 20px;
-  box-shadow: 0 0 20px rgba(188, 19, 254, 0.2);
+  padding: 12px 15px;
+  border-radius: 16px;
+  box-shadow: 0 0 15px rgba(188, 19, 254, 0.2);
   text-align: center;
 }
 
 .game-end-title {
   color: #fff;
-  letter-spacing: 4px;
-  margin-bottom: 30px;
+  letter-spacing: 3px;
+  margin-bottom: 10px;
   text-shadow: 0 0 10px #bc13fe;
-  font-size: 1.75rem;
+  font-size: 1.3rem;
 }
 
 .game-stats-box {
   width: 100%;
   background: rgba(255, 255, 255, 0.05);
-  padding: 20px;
-  border-radius: 10px;
-  margin-bottom: 30px;
+  padding: 10px 12px;
+  border-radius: 8px;
+  margin-bottom: 10px;
   text-align: left;
   border: 1px solid rgba(188, 19, 254, 0.3);
   box-sizing: border-box;
 }
 
 .stat-row {
-  margin: 10px 0;
+  margin: 4px 0;
   display: flex;
   justify-content: space-between;
   color: #fff;
-  font-size: 0.95rem;
+  font-size: 0.85rem;
 }
 
 .stat-value {
@@ -59,16 +60,16 @@
 .score-display-box {
   width: 100%;
   background: #000;
-  padding: 20px;
+  padding: 10px;
   border: 2px solid #fff;
-  margin-bottom: 30px;
+  margin-bottom: 10px;
   box-shadow: inset 0 0 10px #bc13fe;
   box-sizing: border-box;
 }
 
 .score-display-title {
   margin: 0;
-  font-size: 1.5rem;
+  font-size: 1.1rem;
   color: #fff;
   letter-spacing: 2px;
 }
@@ -77,45 +78,9 @@
   width: 100%;
 }
 
-.game-restart-container {
-  position: absolute;
-  right: 20px;
-  bottom: 20px;
-  left: 20px;
-  display: flex;
-  justify-content: center;
-  text-align: center;
-  width: auto;
-}
-
-.game-restart-container .secondary-btn {
-  width: 100%;
-  max-width: 400px;
-}
-
-@media (max-width: 480px) {
-  .game-end-card {
-    padding: 14px;
-    border-radius: 14px;
-  }
-
-  .game-end-title {
-    font-size: 1.35rem;
-    letter-spacing: 2px;
-    margin-bottom: 20px;
-  }
-
-  .game-stats-box,
-  .score-display-box {
-    padding: 14px;
-    margin-bottom: 20px;
-  }
-
-  .stat-row {
-    font-size: 0.8rem;
-  }
-
-  .score-display-title {
-    font-size: 1.2rem;
-  }
+/* מניעת היעלמות הטקסט בלחיצה על הכפתור */
+.action-btn,
+.action-btn:focus,
+.action-btn:active {
+  color: #ffffff !important;
 }

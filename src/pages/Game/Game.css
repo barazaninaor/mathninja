@@ -216,6 +216,11 @@
   .container.game-main-container {
     margin-top: 78px;
   }
+
+  .container.game-main-container:has(#end-screen) {
+    height: 480px;
+    min-height: 480px;
+  }
 }
 
 @media (max-width: 768px) {
@@ -234,6 +239,12 @@
     transform: none;
     outline-offset: 6px;
     border-radius: 18px;
+  }
+
+  /* התאמת גובה קונטיינר מסך הסיום כדי למנוע רווח גדול למטה */
+  .container.game-main-container:has(#end-screen) {
+    height: 460px;
+    min-height: 460px;
   }
 
   .rules-container {
