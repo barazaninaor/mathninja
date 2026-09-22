@@ -306,7 +306,7 @@
   }
 }
 
-/* Mobile-only optimizations: Larger keys, better spacing, and safe feedback black space without altering main container dimensions */
+/* Mobile-only optimizations: Slightly smaller keys, balanced spacing, and safe feedback black gap space */
 @media (max-width: 480px) and (max-height: 700px) {
   #game-play-screen {
     padding-bottom: 24px;
@@ -342,13 +342,13 @@
   }
 
   .numpad {
-    gap: 8px; /* צומצם מעט כדי לתת יותר מקום והקטנה קלה למקשים */
+    gap: 8px; /* Slightly tightened gap for better button proportions */
     margin-bottom: 4px;
   }
 
   .num-btn {
-    font-size: 1.1rem; /* הקטנה קלה של המקשים בנייד */
-    padding: 8px 0; /* הקטנת הגובה של המקשים */
+    font-size: 1.1rem; /* Slightly reduced button font size for mobile */
+    padding: 8px 0; /* Reduced button height */
   }
 
   .action-btn {
