@@ -290,3 +290,10 @@
     min-height: 535px;
   }
 }
+
+/* Force absolute centering for the feedback message inside the container */
+.container.game-main-container .feedback-msg {
+  align-self: center;
+  text-align: center;
+  width: 100%;
+}

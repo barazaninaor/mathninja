@@ -94,10 +94,8 @@
 
 /* Perfectly Centered Feedback Message in the Black Gap */
 .feedback-msg {
-  flex: 1 1 auto;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  flex: none;
+  display: block;
   width: 100%;
   min-height: 28px;
   margin: 0 auto;
@@ -297,7 +295,7 @@
   }
 
   .feedback-msg {
-    flex: 1 1 auto;
+    flex: none;
     min-height: 72px;
     font-size: 1rem;
   }
