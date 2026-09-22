@@ -309,12 +309,12 @@
 /* Mobile-only optimizations: Larger keys, better spacing, and safe feedback black space without altering main container dimensions */
 @media (max-width: 480px) and (max-height: 700px) {
   #game-play-screen {
-    padding-bottom: 24px; /* Reduced bottom padding to optimize vertical space */
+    padding-bottom: 24px;
   }
 
   .feedback-msg {
-    min-height: 52px; /* Ensured enough vertical black space for feedback messages */
-    margin: 6px 0; /* Added margin to separate feedback nicely */
+    min-height: 52px;
+    margin: 6px 0;
   }
 
   .flashcard {
@@ -342,17 +342,17 @@
   }
 
   .numpad {
-    gap: 10px; /* Increased gap between mobile keys */
-    margin-bottom: 6px;
+    gap: 8px; /* צומצם מעט כדי לתת יותר מקום והקטנה קלה למקשים */
+    margin-bottom: 4px;
   }
 
   .num-btn {
-    font-size: 1.2rem; /* Larger number font for mobile */
-    padding: 11px 0; /* Larger touch area / bigger keys */
+    font-size: 1.1rem; /* הקטנה קלה של המקשים בנייד */
+    padding: 8px 0; /* הקטנת הגובה של המקשים */
   }
 
   .action-btn {
-    padding: 9px; /* Slightly larger next/action button */
+    padding: 8px;
   }
 
   .bottom-controls {
@@ -419,7 +419,6 @@
     #bc13fe 55%,
     transparent 65%
   );
-  opacity: 1;
   animation: rotate-purple-frame 0.9s linear infinite;
 }
 

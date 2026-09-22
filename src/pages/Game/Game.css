@@ -284,8 +284,9 @@
     margin-top: 22px;
   }
 
+  /* התאמת גובה קונטיינר מסך המשחק בנייד כך שיתפנה מרווח שחור לפידבק */
   .container.game-main-container:has(#game-play-screen) {
-    height: 500px;
-    min-height: 500px;
+    height: 610px;
+    min-height: 610px;
   }
 }
