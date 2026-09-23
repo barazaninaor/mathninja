@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import { saveScore } from "../../apiService";
 import "./Game.css";
 import GameRules from "../../components/GameRules/GameRules";
 import GameLevels from "../../components/GameLevels/GameLevels";
@@ -86,7 +87,6 @@ export default function Game() {
     setStartTime(Date.now());
     setGameState("playing");
 
-    // גלילה אוטומטית חלקה לראש העמוד ברגע שמתחילים משחק
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
@@ -145,22 +145,9 @@ export default function Game() {
     }
 
     try {
-      const response = await fetch("/api/saveScore", {
-        method: "POST",
-        headers: {
-          Authorization: `Bearer ${token}`,
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          correctAnswers: finalCorrect,
-          durationSeconds: totalSeconds,
-          levelId: levelId,
-        }),
-      });
-
-      if (response.ok) {
-        console.log("Score saved successfully!");
-      }
+      // שימוש בפונקציה מתוך apiService שמכילה את הכתובת המלאה לשרת ב-Render
+      await saveScore(finalCorrect, totalSeconds, levelId);
+      console.log("Score saved successfully!");
     } catch (error) {
       console.error("Error saving score:", error);
     }
@@ -254,7 +241,6 @@ export default function Game() {
         )}
       </div>
 
-      {/* המודל מחוץ ל-Container הראשי כך שיישב תמיד במרכז המסך */}
       <AuthModal
         isOpen={showAuthModal}
         onClose={() => {
