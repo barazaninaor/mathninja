@@ -1,0 +1,124 @@
+/* --- Auth Modal Overlay --- */
+.auth-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(10, 10, 25, 0.85);
+  backdrop-filter: blur(5px);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 10000;
+}
+
+/* --- Auth Modal Container Box --- */
+.auth-modal-container {
+  background: #1a1a2e;
+  border: 2px solid #bc13fe;
+  border-radius: 20px;
+  padding: 40px;
+  max-width: 450px;
+  width: 90%;
+  text-align: center;
+  box-shadow: 0 0 30px rgba(188, 19, 254, 0.5);
+  position: relative;
+  animation: modalPopIn 0.3s ease-out;
+}
+
+/* --- Pop-in Animation --- */
+@keyframes modalPopIn {
+  from {
+    transform: scale(0.8);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+/* --- Modal Header --- */
+.auth-modal-container h2 {
+  color: #bc13fe;
+  font-size: 1.8rem;
+  margin-bottom: 15px;
+  text-shadow: 0 0 10px rgba(188, 19, 254, 0.6);
+}
+
+/* --- Modal Message Text --- */
+.auth-modal-container p {
+  color: #d1d1d1;
+  font-size: 1rem;
+  margin-bottom: 30px;
+  line-height: 1.5;
+}
+
+/* --- Modal Actions Container --- */
+.auth-modal-actions {
+  display: flex;
+  gap: 15px;
+  justify-content: center;
+}
+
+/* --- Base Button Styles inside Modal Actions --- */
+.auth-modal-actions .action-btn {
+  padding: 12px 25px;
+  border-radius: 8px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  border: none;
+  font-size: 1rem;
+}
+
+/* --- Primary Login Action Button Style (with forced white text on all states) --- */
+.auth-modal-container .login-action,
+.auth-modal-container .login-action:hover,
+.auth-modal-container .login-action:focus,
+.auth-modal-container .login-action:active {
+  background-color: #bc13fe !important;
+  color: #ffffff !important;
+  box-shadow: 0 0 10px rgba(188, 19, 254, 0.4);
+}
+
+.auth-modal-container .login-action:hover,
+.auth-modal-container .login-action:active {
+  background-color: #a00ded !important;
+  box-shadow: 0 0 20px rgba(188, 19, 254, 0.8);
+}
+
+/* --- Secondary Signup Action Button Style (with forced white text on all states) --- */
+.auth-modal-container .signup-action,
+.auth-modal-container .signup-action:hover,
+.auth-modal-container .signup-action:focus,
+.auth-modal-container .signup-action:active {
+  background-color: transparent !important;
+  color: #ffffff !important;
+  border: 1px solid #bc13fe !important;
+  box-shadow: 0 0 10px rgba(188, 19, 254, 0.4);
+}
+
+.auth-modal-container .signup-action:hover,
+.auth-modal-container .signup-action:active {
+  background-color: #a00ded !important;
+  box-shadow: 0 0 20px rgba(188, 19, 254, 0.8);
+}
+
+/* --- Close (X) Button Style --- */
+.close-modal-btn {
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  background: none;
+  border: none;
+  color: #888;
+  font-size: 1.2rem;
+  cursor: pointer;
+  transition: color 0.2s;
+}
+
+.close-modal-btn:hover {
+  color: white;
+}

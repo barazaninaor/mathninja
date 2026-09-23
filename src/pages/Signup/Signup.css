@@ -63,11 +63,6 @@
   transition: all 0.3s ease;
 }
 
-.signup-container input:focus {
-  border-color: #00d4ff;
-  box-shadow: 0 0 10px rgba(0, 212, 255, 0.5);
-}
-
 .signup-container button {
   display: block;
   width: 60%;

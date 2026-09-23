@@ -1,10 +1,11 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import "./Game.css";
 import GameRules from "../../components/GameRules/GameRules";
 import GameLevels from "../../components/GameLevels/GameLevels";
 import GamePlay from "../../components/GamePlay/GamePlay";
 import GameEndScreen from "../../components/GameEndScreen/GameEndScreen";
+import AuthModal from "../../components/AuthModal/AuthModal";
 
 interface Exercise {
   num1: number;
@@ -23,12 +24,20 @@ const levelValues: Record<LevelName, number> = {
 function getSavedLevel(): { name: LevelName; value: number } {
   const savedLevel = localStorage.getItem("selectedLevel") as LevelName | null;
   const name = savedLevel && savedLevel in levelValues ? savedLevel : "Easy";
-
   return { name, value: levelValues[name] };
 }
 
 export default function Game() {
   const navigate = useNavigate();
+  const [showAuthModal, setShowAuthModal] = useState(false);
+
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    if (!token) {
+      setShowAuthModal(true);
+    }
+  }, []);
+
   const savedLevel = getSavedLevel();
   const [gameState, setGameState] = useState<"start" | "playing" | "end">(
     "start",
@@ -76,6 +85,9 @@ export default function Game() {
     setLastFeedback("");
     setStartTime(Date.now());
     setGameState("playing");
+
+    // גלילה אוטומטית לראש העמוד ברגע שהמשחק מתחיל
+    window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
   const finishGame = (
@@ -128,7 +140,7 @@ export default function Game() {
     const token = localStorage.getItem("token");
 
     if (!token) {
-      console.warn("User not logged in, score not saved.");
+      setShowAuthModal(true);
       return;
     }
 
@@ -147,7 +159,7 @@ export default function Game() {
       });
 
       if (response.ok) {
-        console.log("Score saved to database successfully!");
+        console.log("Score saved successfully!");
       }
     } catch (error) {
       console.error("Error saving score:", error);
@@ -182,59 +194,66 @@ export default function Game() {
   };
 
   return (
-    <div className="container game-main-container">
-      {gameState === "start" && (
-        <div id="start-screen">
-          <GameRules />
-
-          <p
-            style={{
-              marginBottom: 20,
-              color: "#b3b3b3",
-              textAlign: "center",
-            }}
-          >
-            SELECT DIFFICULTY
-          </p>
-
-          <GameLevels
-            currentLevelValue={currentLevelValue}
-            onSelectLevel={selectLevel}
-          />
-
-          <div className="ready-controls">
-            <button
-              className="action-btn ready-btn"
-              data-label="I'M READY!"
-              onClick={startGame}
+    <>
+      <div className="container game-main-container">
+        {gameState === "start" && (
+          <div id="start-screen">
+            <GameRules />
+            <p
+              style={{
+                marginBottom: 20,
+                color: "#b3b3b3",
+                textAlign: "center",
+              }}
             >
-              I'M READY!
-            </button>
+              SELECT DIFFICULTY
+            </p>
+            <GameLevels
+              currentLevelValue={currentLevelValue}
+              onSelectLevel={selectLevel}
+            />
+            <div className="ready-controls">
+              <button
+                className="action-btn ready-btn"
+                data-label="I'M READY!"
+                onClick={startGame}
+              >
+                I'M READY!
+              </button>
+            </div>
           </div>
-        </div>
-      )}
+        )}
 
-      {gameState === "playing" && (
-        <GamePlay
-          exercises={exercises}
-          currentIndex={currentIndex}
-          userGuess={userGuess}
-          setUserGuess={setUserGuess}
-          lastFeedback={lastFeedback}
-          checkAnswer={checkAnswer}
-          finishGame={finishGame}
-          onRestart={() => setGameState("start")}
-          startTime={startTime}
-        />
-      )}
+        {gameState === "playing" && (
+          <GamePlay
+            exercises={exercises}
+            currentIndex={currentIndex}
+            userGuess={userGuess}
+            setUserGuess={setUserGuess}
+            lastFeedback={lastFeedback}
+            checkAnswer={checkAnswer}
+            finishGame={finishGame}
+            onRestart={() => setGameState("start")}
+            startTime={startTime}
+          />
+        )}
 
-      {gameState === "end" && (
-        <GameEndScreen
-          finalStats={finalStats}
-          onViewStats={() => navigate("/scores")}
-          onRestart={() => setGameState("start")}
-        />
-      )}
-    </div>
+        {gameState === "end" && (
+          <GameEndScreen
+            finalStats={finalStats}
+            onViewStats={() => navigate("/scores")}
+            onRestart={() => setGameState("start")}
+          />
+        )}
+      </div>
+
+      <AuthModal
+        isOpen={showAuthModal}
+        onClose={() => {
+          setShowAuthModal(false);
+          navigate("/");
+        }}
+      />
+    </>
   );
 }

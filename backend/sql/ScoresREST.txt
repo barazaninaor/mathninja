@@ -1,0 +1,79 @@
+-- =========================================================================
+-- PostgreSQL Functions for Game Results (Backup / Reference Script)
+-- =========================================================================
+
+------------------------------------------------------------------------
+--- 1. Get All Scores By ID / Filter [GET]
+------------------------------------------------------------------------
+CREATE OR REPLACE FUNCTION sp_get_player_scores(
+    p_user_id INT,
+    p_level_id INT,
+    p_start_date DATE DEFAULT NULL,
+    p_end_date DATE DEFAULT NULL
+)
+RETURNS TABLE (
+    date VARCHAR,
+    duration VARCHAR,
+    success_rate INT,
+    score INT
+) AS $$
+BEGIN
+    RETURN QUERY 
+    SELECT 
+        -- Format date to dd/MM/yyyy
+        TO_CHAR(played_at, 'DD/MM/YYYY') AS date,
+        
+        -- Format duration seconds to MM:SS
+        LPAD((duration_seconds / 60)::TEXT, 2, '0') || ':' || 
+        LPAD((duration_seconds % 60)::TEXT, 2, '0') AS duration,
+        
+        -- Calculate success rate percentage
+        ROUND((correct_answers::FLOAT / 30.0) * 100)::INT AS success_rate,
+        
+        -- Calculate score with time penalty adjustments
+        CASE 
+            WHEN (100 - ((30 - correct_answers) * 3) - 
+                  CASE WHEN duration_seconds > 300 THEN (duration_seconds - 300) / 10 ELSE 0 END) < 10 
+            THEN 10 
+            ELSE (100 - ((30 - correct_answers) * 3) - 
+                  CASE WHEN duration_seconds > 300 THEN (duration_seconds - 300) / 10 ELSE 0 END)
+        END::INT AS score
+
+    FROM game_results
+    WHERE user_id = p_user_id 
+      AND level_id = p_level_id
+      AND (p_start_date IS NULL OR played_at >= p_start_date)
+      AND (p_end_date IS NULL OR played_at <= p_end_date)
+    ORDER BY played_at DESC;
+END;
+$$ LANGUAGE plpgsql;
+
+-- Example execution:
+-- SELECT * FROM sp_get_player_scores(1, 2, NULL, NULL);
+
+
+------------------------------------------------------------------------
+--- 2. Save Game Results [POST]
+------------------------------------------------------------------------
+CREATE OR REPLACE FUNCTION sp_save_game_result(
+    p_user_id INT,
+    p_correct_answers INT,
+    p_duration_seconds INT,
+    p_level_id INT
+)
+RETURNS INT AS $$
+DECLARE
+    new_result_id INT;
+BEGIN
+    -- Inserting the game data with a server-side timestamp (NOW())
+    INSERT INTO game_results (user_id, correct_answers, duration_seconds, level_id, played_at)
+    VALUES (p_user_id, p_correct_answers, p_duration_seconds, p_level_id, NOW())
+    RETURNING id INTO new_result_id;
+
+    -- Return the ID of the new record
+    RETURN new_result_id;
+END;
+$$ LANGUAGE plpgsql;
+
+-- Example execution:
+-- SELECT sp_save_game_result(1, 28, 145, 2);

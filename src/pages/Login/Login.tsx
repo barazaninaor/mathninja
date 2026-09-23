@@ -1,6 +1,8 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import { signIn } from "../../apiService";
 import "./Login.css";
+import LoadingOverlay from "../../components/LoadingOverlay/LoadingOverlay";
 
 export default function Login() {
   const navigate = useNavigate();
@@ -9,7 +11,7 @@ export default function Login() {
   const [errorMessage, setErrorMessage] = useState("");
   const [isLoading, setIsLoading] = useState(false);
 
-  // Clear fields on mount (similar to body onload="clearFields()")
+  // Clear fields on mount and set up Enter key listener
   useEffect(() => {
     setEmail("");
     setPassword("");
@@ -29,36 +31,29 @@ export default function Login() {
   const sendSignIn = async () => {
     setErrorMessage("");
 
-    if (!email.trim() || !password.trim()) {
+    // Grab current values directly from DOM elements to support browser autofill smoothly
+    const emailInput =
+      (document.getElementById("email") as HTMLInputElement)?.value || email;
+    const passwordInput =
+      (document.getElementById("password") as HTMLInputElement)?.value ||
+      password;
+
+    if (!emailInput.trim() || !passwordInput.trim()) {
       setErrorMessage("Please fill in all fields.");
       return;
     }
 
     try {
-      const res = await fetch("/signIn", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email, password }),
-      });
-
-      if (!res.ok) {
-        throw new Error("Invalid email or password.");
-      }
-
-      const data = await res.json();
+      const data = await signIn(emailInput, passwordInput);
       const token = data.theToken || data.myToken || data.token;
 
       if (token) {
+        // Save token to localStorage upon successful login
         localStorage.setItem("token", token);
-
-        if (data.user) {
-          localStorage.setItem("user", JSON.stringify(data.user));
-        }
-
         setErrorMessage("");
         setIsLoading(true);
 
-        // השהייה של 3 שניות כפי שביקשת בעיצוב
+        // Delay navigation to showcase the neon loading overlay
         setTimeout(() => {
           navigate("/game");
         }, 3000);
@@ -72,11 +67,8 @@ export default function Login() {
 
   return (
     <div>
-      {isLoading && (
-        <div id="loadingOverlay" style={{ display: "flex" }}>
-          <div className="loader-text">LOADING...</div>
-        </div>
-      )}
+      {/* Neon loading overlay component */}
+      <LoadingOverlay isLoading={isLoading} text="LOADING..." />
 
       <div className="login-page">
         <div className="login-container">
@@ -91,6 +83,7 @@ export default function Login() {
               autoComplete="username"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
+              onBlur={(e) => setEmail(e.target.value)}
               required
             />
           </div>
@@ -104,6 +97,7 @@ export default function Login() {
               autoComplete="current-password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
+              onBlur={(e) => setPassword(e.target.value)}
               required
             />
           </div>

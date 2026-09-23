@@ -1,6 +1,8 @@
 import { useState, useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
+import { signUp, updateProfile } from "../../apiService";
 import "./Signup.css";
+import AuthModal from "../../components/AuthModal/AuthModal";
 
 export default function SignUp() {
   const navigate = useNavigate();
@@ -56,52 +58,52 @@ export default function SignUp() {
       return;
     }
 
-    const userData = {
-      fullName: trimmedName,
-      email: trimmedEmail,
-      password,
-    };
-
-    const method = token ? "PUT" : "POST";
-    const url = token ? "/updateProfile" : "/signUp";
-
     try {
-      const res = await fetch(url, {
-        method: method,
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: token ? `Bearer ${token}` : "",
-        },
-        body: JSON.stringify(userData),
-      });
+      if (token && isEditMode) {
+        // Update Profile Flow
+        const data = await updateProfile(trimmedName, password || undefined);
+        showAlert(
+          "Profile Updated",
+          data.message || "Profile updated successfully!",
+          () => {
+            const storedUser = JSON.parse(localStorage.getItem("user") || "{}");
+            const updatedUser = {
+              ...storedUser,
+              fullName: trimmedName,
+            };
+            localStorage.setItem("user", JSON.stringify(updatedUser));
+            navigate("/");
+          },
+        );
+      } else {
+        // Sign Up Flow
+        const data = await signUp(trimmedName, trimmedEmail, password);
+        showAlert(
+          "Success",
+          data.message || "User registered successfully!",
+          () => {
+            // שמירת הטוקן מהשרת כדי שהמשחק לא יבקש התחברות מחדש
+            if (data.token) {
+              localStorage.setItem("token", data.token);
+            }
 
-      const data = await res.json();
+            if (data.user) {
+              localStorage.setItem("user", JSON.stringify(data.user));
+            } else {
+              localStorage.setItem(
+                "user",
+                JSON.stringify({ fullName: trimmedName, email: trimmedEmail }),
+              );
+            }
 
-      if (!res.ok) {
-        showAlert("Error", data.message || "Action failed.");
-        return;
+            // מעבר ישיר למסך המשחק
+            navigate("/game");
+          },
+        );
       }
-
-      const successTitle = method === "PUT" ? "Profile Updated" : "Success";
-
-      showAlert(successTitle, data.message || "Action completed!", () => {
-        if (method === "POST" && data.token) {
-          localStorage.setItem("token", data.token);
-          localStorage.setItem("user", JSON.stringify(data.user));
-        } else if (token) {
-          const storedUser = JSON.parse(localStorage.getItem("user") || "{}");
-          const updatedUser = {
-            ...storedUser,
-            fullName: trimmedName,
-          };
-          localStorage.setItem("user", JSON.stringify(updatedUser));
-        }
-
-        navigate("/");
-      });
-    } catch (err) {
+    } catch (err: any) {
       console.error("Connection Error:", err);
-      showAlert("Error", "Could not connect to the server.");
+      showAlert("Error", err.message || "Could not connect to the server.");
     }
   };
 
@@ -170,24 +172,15 @@ export default function SignUp() {
         )}
       </div>
 
-      {modalOpen && (
-        <div id="customModal" className="modal" style={{ display: "flex" }}>
-          <div className="modal-content container">
-            <h3 id="modalTitle">{modalTitle}</h3>
-            <p id="modalMessage">{modalMessage}</p>
-
-            <div className="modal-actions">
-              <button
-                id="modalConfirm"
-                className="btn-small"
-                onClick={handleModalConfirm}
-              >
-                OK
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
+      <AuthModal
+        isOpen={modalOpen}
+        onClose={() => setModalOpen(false)}
+        title={modalTitle}
+        message={modalMessage}
+        confirmText="OK"
+        onConfirm={handleModalConfirm}
+        showSecondaryButton={false}
+      />
     </div>
   );
 }

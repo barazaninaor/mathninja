@@ -1,0 +1,31 @@
+-- Create users table
+CREATE TABLE IF NOT EXISTS users (
+    id SERIAL PRIMARY KEY,
+    full_name VARCHAR(255) NOT NULL,
+    email VARCHAR(255) UNIQUE NOT NULL,
+    password VARCHAR(255) NOT NULL,
+    join_date DATE DEFAULT CURRENT_DATE
+);
+
+-- Create game levels lookup table
+CREATE TABLE IF NOT EXISTS game_levels (
+    id INT PRIMARY KEY,
+    level_name VARCHAR(20) NOT NULL UNIQUE
+);
+
+INSERT INTO game_levels (id, level_name) VALUES 
+(1, 'Easy'),
+(2, 'Medium'),
+(3, 'Hard'),
+(4, 'Insane')
+ON CONFLICT (id) DO NOTHING;
+
+-- Create main game results table
+CREATE TABLE IF NOT EXISTS game_results (
+    id SERIAL PRIMARY KEY,
+    user_id INT NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+    correct_answers INT NOT NULL,
+    duration_seconds INT NOT NULL,
+    level_id INT NOT NULL REFERENCES game_levels(id),
+    played_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);

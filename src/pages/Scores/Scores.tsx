@@ -1,10 +1,12 @@
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import ScoreChart from "../../components/ScoreChart/ScoreChart";
 import ScoreTable, {
   type ScoreItem,
   type ScoreSortKey,
 } from "../../components/ScoreTable/ScoreTable";
 import { MainTitle } from "../../components/MainTitle/MainTitle";
+import AuthModal from "../../components/AuthModal/AuthModal"; // ייבוא המודל
 import "./Scores.css";
 
 const LEVELS = ["Easy", "Medium", "Hard", "Insane"];
@@ -95,6 +97,17 @@ function getSortValue(item: ScoreItem, key: ScoreSortKey): number {
 }
 
 export default function Scores() {
+  const navigate = useNavigate();
+  const [showAuthModal, setShowAuthModal] = useState(false); // סטייט לפתיחת המודל
+
+  // הגנה על העמוד: בדיקה האם המשתמש מחובר
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    if (!token) {
+      setShowAuthModal(true);
+    }
+  }, []);
+
   const [currentLevel, setCurrentLevel] = useState(getSavedLevel);
   const [currentTimeFilter, setCurrentTimeFilter] = useState("all");
   const [startDate, setStartDate] = useState("");
@@ -271,6 +284,15 @@ export default function Scores() {
           }}
         />
       </div>
+
+      {/* מודל התחברות קופץ במקרה שהמשתמש אינו מחובר */}
+      <AuthModal
+        isOpen={showAuthModal}
+        onClose={() => {
+          setShowAuthModal(false);
+          navigate("/");
+        }}
+      />
     </div>
   );
 }
