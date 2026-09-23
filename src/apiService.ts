@@ -1,4 +1,4 @@
-const API_URL = "https://math-ninja-btcg.onrender.com";
+const API_URL = "https://mathninja-btcg.onrender.com";
 
 // Helper to get auth headers with JWT token
 function getAuthHeaders() {
