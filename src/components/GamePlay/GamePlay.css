@@ -430,7 +430,7 @@
   align-items: center;
   justify-content: center;
   border-radius: 7px;
-  background: #000;
+  background: linear-gradient(to bottom, #73069c, #bc13fe);
   color: #fff;
   font: inherit;
   letter-spacing: inherit;

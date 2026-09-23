@@ -66,3 +66,15 @@
   text-shadow: 0 0 10px #00d4ff;
   opacity: 0.9;
 }
+
+/* --- Mobile Only Loading Adjustments --- */
+@media (max-width: 768px) {
+  .loader-text {
+    font-size: 11vw !important;
+    letter-spacing: 6px;
+  }
+
+  #loadingOverlay::after {
+    font-size: 1.4rem;
+  }
+}
