@@ -6,6 +6,7 @@ import GameLevels from "../../components/GameLevels/GameLevels";
 import GamePlay from "../../components/GamePlay/GamePlay";
 import GameEndScreen from "../../components/GameEndScreen/GameEndScreen";
 import AuthModal from "../../components/AuthModal/AuthModal";
+import { saveScore } from "../../apiService";
 
 interface Exercise {
   num1: number;
@@ -21,6 +22,7 @@ const levelValues: Record<LevelName, number> = {
   Insane: 100,
 };
 
+// Helper function to retrieve the saved level from localStorage or default to "Easy"
 function getSavedLevel(): { name: LevelName; value: number } {
   const savedLevel = localStorage.getItem("selectedLevel") as LevelName | null;
   const name = savedLevel && savedLevel in levelValues ? savedLevel : "Easy";
@@ -31,6 +33,7 @@ export default function Game() {
   const navigate = useNavigate();
   const [showAuthModal, setShowAuthModal] = useState(false);
 
+  // Check for authentication token on component mount
   useEffect(() => {
     const token = localStorage.getItem("token");
     if (!token) {
@@ -63,12 +66,14 @@ export default function Game() {
     finalScore: 0,
   });
 
+  // Handle difficulty level selection
   const selectLevel = (value: number, name: LevelName) => {
     setCurrentLevelValue(value);
     setCurrentLevelName(name);
     localStorage.setItem("selectedLevel", name);
   };
 
+  // Initialize and start the game session
   const startGame = () => {
     const newExercises: Exercise[] = [];
     for (let i = 0; i < 30; i++) {
@@ -86,10 +91,11 @@ export default function Game() {
     setStartTime(Date.now());
     setGameState("playing");
 
-    // גלילה אוטומטית לראש העמוד ברגע שהמשחק מתחיל
+    // Automatically scroll to the top of the page when starting the game (fixes mobile scroll view issue)
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
+  // Finish the game session and trigger end-game calculations
   const finishGame = (
     finalCorrect = correctAnswers,
     currentBaseScore = baseScore,
@@ -98,6 +104,7 @@ export default function Game() {
     handleGameEnd(finalCorrect, totalSeconds, currentBaseScore);
   };
 
+  // Validate user answer and progress through exercises
   const checkAnswer = () => {
     const answer = Number(userGuess);
     if (!Number.isInteger(answer) || !exercises[currentIndex]) return;
@@ -125,48 +132,8 @@ export default function Game() {
     setUserGuess("");
   };
 
-  const saveGameResult = async (
-    finalCorrect: number,
-    totalSeconds: number,
-    levelName: LevelName,
-  ) => {
-    const levelMap: Record<LevelName, number> = {
-      Easy: 1,
-      Medium: 2,
-      Hard: 3,
-      Insane: 4,
-    };
-    const levelId = levelMap[levelName] || 4;
-    const token = localStorage.getItem("token");
-
-    if (!token) {
-      setShowAuthModal(true);
-      return;
-    }
-
-    try {
-      const response = await fetch("/api/saveScore", {
-        method: "POST",
-        headers: {
-          Authorization: `Bearer ${token}`,
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          correctAnswers: finalCorrect,
-          durationSeconds: totalSeconds,
-          levelId: levelId,
-        }),
-      });
-
-      if (response.ok) {
-        console.log("Score saved successfully!");
-      }
-    } catch (error) {
-      console.error("Error saving score:", error);
-    }
-  };
-
-  const handleGameEnd = (
+  // Handle game completion, calculate final stats, and persist score via API
+  const handleGameEnd = async (
     finalCorrect: number,
     totalSeconds: number,
     currentBaseScore: number,
@@ -188,14 +155,35 @@ export default function Game() {
 
     setGameState("end");
 
-    setTimeout(() => {
-      saveGameResult(finalCorrect, totalSeconds, currentLevelName);
+    // Send score to backend server using the API service after a short delay
+    setTimeout(async () => {
+      const levelMap: Record<LevelName, number> = {
+        Easy: 1,
+        Medium: 2,
+        Hard: 3,
+        Insane: 4,
+      };
+      const levelId = levelMap[currentLevelName] || 4;
+      const token = localStorage.getItem("token");
+
+      if (!token) {
+        setShowAuthModal(true);
+        return;
+      }
+
+      try {
+        await saveScore(finalCorrect, totalSeconds, levelId);
+        console.log("Score saved successfully!");
+      } catch (error) {
+        console.error("Error saving score:", error);
+      }
     }, 100);
   };
 
   return (
     <>
       <div className="container game-main-container">
+        {/* Start Screen */}
         {gameState === "start" && (
           <div id="start-screen">
             <GameRules />
@@ -224,6 +212,7 @@ export default function Game() {
           </div>
         )}
 
+        {/* Active Gameplay Screen */}
         {gameState === "playing" && (
           <GamePlay
             exercises={exercises}
@@ -238,6 +227,7 @@ export default function Game() {
           />
         )}
 
+        {/* End Game Stats Screen */}
         {gameState === "end" && (
           <GameEndScreen
             finalStats={finalStats}
@@ -247,6 +237,7 @@ export default function Game() {
         )}
       </div>
 
+      {/* Authentication Modal popup */}
       <AuthModal
         isOpen={showAuthModal}
         onClose={() => {
