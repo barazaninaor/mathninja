@@ -10,8 +10,13 @@ require("dotenv").config();
 const app = express();
 const port = process.env.PORT || 5000;
 
-// Middleware setup
-app.use(cors()); // Enable CORS for frontend communication
+// Middleware setup with explicit CORS configuration for GitHub Pages frontend
+app.use(
+  cors({
+    origin: "https://barazaninaor.github.io",
+    credentials: true,
+  }),
+);
 app.use(express.json()); // Parse incoming JSON requests
 
 // SIGNUP ROUTE: Register a new user and return a JWT token
