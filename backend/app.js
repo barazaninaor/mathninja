@@ -10,10 +10,10 @@ require("dotenv").config();
 const app = express();
 const port = process.env.PORT || 5000;
 
-// Middleware setup with explicit CORS configuration for GitHub Pages frontend
+// Middleware setup with dynamic CORS configuration to allow requests from GitHub Pages and local environments
 app.use(
   cors({
-    origin: "https://barazaninaor.github.io",
+    origin: true,
     credentials: true,
   }),
 );
