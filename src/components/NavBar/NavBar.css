@@ -80,10 +80,33 @@
   border-bottom: 2px solid #a020f0;
 }
 
-.logout-link {
-  color: #ff4b2b;
+.auth-logged-in-container {
+  display: flex;
+  align-items: center;
+  gap: 15px;
 }
 
+.welcome-text {
+  color: #ffffff;
+  font-size: 0.95rem;
+}
+
+.welcome-text strong {
+  color: #ffffff;
+}
+
+.logout-link {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: inherit;
+  font-family: inherit;
+  padding: 0;
+  color: #ff4b2b;
+  font-weight: 500;
+}
+
+/* Hamburger Toggle Button (Hidden on desktop) */
 .navbar-toggle {
   display: none;
   background: transparent;
@@ -106,31 +129,69 @@
     opacity 0.3s ease;
 }
 
+/* Hamburger animation when active */
+.navbar-toggle.active span:nth-child(1) {
+  transform: translateY(9px) rotate(45deg);
+}
+
+.navbar-toggle.active span:nth-child(2) {
+  opacity: 0;
+}
+
+.navbar-toggle.active span:nth-child(3) {
+  transform: translateY(-9px) rotate(-45deg);
+}
+
+/* Responsive adjustments for Mobile */
 @media (max-width: 768px) {
   .navbar {
-    padding: 0.7rem 0.75rem;
+    padding: 1rem;
   }
 
-  .nav-container {
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: 8px 16px;
+  .navbar-toggle {
+    display: flex; /* Show hamburger button on mobile */
   }
 
-  .logo {
+  .nav-menu-wrapper {
+    display: none;
+    position: absolute;
+    top: 100%;
+    left: 0;
     width: 100%;
-    text-align: center;
-    font-size: 1.2rem;
+    background-color: #1a1a2e;
+    flex-direction: column;
+    align-items: center;
+    padding: 24px 16px;
+    gap: 20px;
+    border-bottom: 2px solid #6a0dad;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.8);
+    box-sizing: border-box;
+    margin-left: 0;
   }
 
-  .nav-links {
-    gap: 0.8rem;
-    justify-content: center;
-    flex-wrap: wrap;
+  .nav-menu-wrapper.active {
+    display: flex; /* Show menu container when toggled */
   }
 
   .nav-main,
   .nav-auth {
-    flex: 0 1 auto;
+    flex-direction: column;
+    width: 100%;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .nav-links {
+    flex-direction: column;
+    gap: 16px;
+    width: 100%;
+    align-items: center;
+  }
+
+  .auth-logged-in-container {
+    flex-direction: column;
+    width: 100%;
+    align-items: center;
+    gap: 12px;
   }
 }

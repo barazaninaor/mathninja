@@ -12,6 +12,7 @@ export function Navbar() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [username, setUsername] = useState("");
   const [isLoading, setIsLoading] = useState(false); // Controlled loading state
+  const [isMenuOpen, setIsMenuOpen] = useState(false); // Mobile hamburger menu state
 
   // Update authentication state on route change without triggering full-screen loading
   useEffect(() => {
@@ -35,6 +36,7 @@ export function Navbar() {
   // Handle user logout with a deliberate, smooth loading overlay transition
   const handleLogout = () => {
     setIsLoading(true); // Trigger the loading overlay purposefully
+    setIsMenuOpen(false);
 
     setTimeout(() => {
       localStorage.removeItem("token");
@@ -45,6 +47,8 @@ export function Navbar() {
       navigate("/");
     }, 800); // Simulate network/cleanup delay for a polished UX
   };
+
+  const closeMenu = () => setIsMenuOpen(false);
 
   return (
     <>
@@ -57,89 +61,89 @@ export function Navbar() {
             Math <span>Ninja</span>
           </div>
 
-          <ul className="nav-links nav-main">
-            <li>
-              <NavLink
-                to="/"
-                className={({ isActive }) => (isActive ? "active" : "")}
-              >
-                Home
-              </NavLink>
-            </li>
-            <li>
-              <NavLink
-                to="/game"
-                id="nav-game"
-                className={({ isActive }) => (isActive ? "active" : "")}
-              >
-                Game
-              </NavLink>
-            </li>
-            <li>
-              <NavLink
-                to="/scores"
-                className={({ isActive }) => (isActive ? "active" : "")}
-              >
-                Scores
-              </NavLink>
-            </li>
-            <li>
-              <NavLink
-                to="/about"
-                className={({ isActive }) => (isActive ? "active" : "")}
-              >
-                About
-              </NavLink>
-            </li>
-          </ul>
+          {/* Hamburger Menu Toggle Button for Mobile */}
+          <button
+            className={`navbar-toggle ${isMenuOpen ? "active" : ""}`}
+            onClick={() => setIsMenuOpen(!isMenuOpen)}
+            aria-label="Toggle navigation"
+          >
+            <span></span>
+            <span></span>
+            <span></span>
+          </button>
 
-          <ul className="nav-links nav-auth">
-            {isAuthenticated ? (
-              <div
-                style={{ display: "flex", alignItems: "center", gap: "15px" }}
-              >
-                <span style={{ color: "#ffffff", fontSize: "0.95rem" }}>
-                  Welcome,{" "}
-                  <strong style={{ color: "#ffffff" }}>{username}</strong>
-                </span>
-                <li>
-                  <button
-                    onClick={handleLogout}
-                    className="logout-link"
-                    style={{
-                      background: "none",
-                      border: "none",
-                      cursor: "pointer",
-                      fontSize: "inherit",
-                      fontFamily: "inherit",
-                      padding: 0,
-                    }}
-                  >
-                    Log Out
-                  </button>
-                </li>
-              </div>
-            ) : (
-              <>
-                <li>
-                  <NavLink
-                    to="/signup"
-                    className={({ isActive }) => (isActive ? "active" : "")}
-                  >
-                    Sign Up
-                  </NavLink>
-                </li>
-                <li>
-                  <NavLink
-                    to="/signin"
-                    className={({ isActive }) => (isActive ? "active" : "")}
-                  >
-                    Log In
-                  </NavLink>
-                </li>
-              </>
-            )}
-          </ul>
+          {/* Wrapper for links and auth that collapses on mobile */}
+          <div className={`nav-menu-wrapper ${isMenuOpen ? "active" : ""}`}>
+            <ul className="nav-links nav-main" onClick={closeMenu}>
+              <li>
+                <NavLink
+                  to="/"
+                  className={({ isActive }) => (isActive ? "active" : "")}
+                >
+                  Home
+                </NavLink>
+              </li>
+              <li>
+                <NavLink
+                  to="/game"
+                  id="nav-game"
+                  className={({ isActive }) => (isActive ? "active" : "")}
+                >
+                  Game
+                </NavLink>
+              </li>
+              <li>
+                <NavLink
+                  to="/scores"
+                  className={({ isActive }) => (isActive ? "active" : "")}
+                >
+                  Scores
+                </NavLink>
+              </li>
+              <li>
+                <NavLink
+                  to="/about"
+                  className={({ isActive }) => (isActive ? "active" : "")}
+                >
+                  About
+                </NavLink>
+              </li>
+            </ul>
+
+            <ul className="nav-links nav-auth" onClick={closeMenu}>
+              {isAuthenticated ? (
+                <div className="auth-logged-in-container">
+                  <span className="welcome-text">
+                    Welcome, <strong>{username}</strong>
+                  </span>
+                  <li>
+                    <button onClick={handleLogout} className="logout-link">
+                      Log Out
+                    </button>
+                  </li>
+                </div>
+              ) : (
+                <>
+                  <li>
+                    <NavLink
+                      to="/signup"
+                      className={({ isActive }) => (isActive ? "active" : "")}
+                    >
+                      Sign Up
+                    </NavLink>
+                  </li>
+                  <li>
+                    <NavLink
+                      to="/signin"
+                      className={({ isActive }) => (isActive ? "active" : "")}
+                    >
+                      Log In
+                    </NavLink>
+                  </li>
+                </>
+              )}
+            </ul>
+          </div>
         </div>
       </nav>
     </>
