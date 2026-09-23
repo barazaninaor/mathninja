@@ -8,7 +8,7 @@ const { connectDB } = require("./db");
 require("dotenv").config();
 
 const app = express();
-const port = process.env.PORT || 5000;
+const port = process.env.PORT || 3000;
 
 // Middleware setup with dynamic CORS configuration to allow requests from GitHub Pages and local environments
 app.use(
@@ -151,7 +151,7 @@ app.post("/api/saveScore", authenticateToken, async (req, res) => {
 // Connect to database and start the server only upon success
 connectDB()
   .then(() => {
-    app.listen(port, () => {
+    app.listen(port, "0.0.0.0", () => {
       console.log(`Server running on port ${port}`);
     });
   })
