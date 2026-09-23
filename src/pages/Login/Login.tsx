@@ -3,13 +3,19 @@ import { useNavigate } from "react-router-dom";
 import { signIn } from "../../apiService";
 import "./Login.css";
 import LoadingOverlay from "../../components/LoadingOverlay/LoadingOverlay";
+import AuthModal from "../../components/AuthModal/AuthModal";
 
 export default function Login() {
   const navigate = useNavigate();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [errorMessage, setErrorMessage] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+
+  // Modal State
+  const [modalOpen, setModalOpen] = useState(false);
+  const [modalTitle, setModalTitle] = useState("Notification");
+  const [modalMessage, setModalMessage] = useState("");
+  const [modalCallback, setModalCallback] = useState<(() => void) | null>(null);
 
   // Clear fields on mount and set up Enter key listener
   useEffect(() => {
@@ -28,9 +34,21 @@ export default function Login() {
     };
   }, []);
 
-  const sendSignIn = async () => {
-    setErrorMessage("");
+  const showAlert = (title: string, message: string, callback?: () => void) => {
+    setModalTitle(title);
+    setModalMessage(message);
+    setModalCallback(() => callback || null);
+    setModalOpen(true);
+  };
 
+  const handleModalConfirm = () => {
+    setModalOpen(false);
+    if (modalCallback) {
+      modalCallback();
+    }
+  };
+
+  const sendSignIn = async () => {
     // Grab current values directly from DOM elements to support browser autofill smoothly
     const emailInput =
       (document.getElementById("email") as HTMLInputElement)?.value || email;
@@ -39,7 +57,7 @@ export default function Login() {
       password;
 
     if (!emailInput.trim() || !passwordInput.trim()) {
-      setErrorMessage("Please fill in all fields.");
+      showAlert("Validation Error", "Please fill in all fields.");
       return;
     }
 
@@ -50,7 +68,17 @@ export default function Login() {
       if (token) {
         // Save token to localStorage upon successful login
         localStorage.setItem("token", token);
-        setErrorMessage("");
+
+        // שמירת פרטי המשתמש ב-localStorage כדי שה-Navbar יזהה את השם האמיתי
+        if (data.user) {
+          localStorage.setItem("user", JSON.stringify(data.user));
+        } else if (data.fullName) {
+          localStorage.setItem(
+            "user",
+            JSON.stringify({ fullName: data.fullName }),
+          );
+        }
+
         setIsLoading(true);
 
         // Delay navigation to showcase the neon loading overlay
@@ -61,7 +89,7 @@ export default function Login() {
         throw new Error("No token received.");
       }
     } catch (err: any) {
-      setErrorMessage(err.message || "Server error.");
+      showAlert("Login Error", err.message || "Server error.");
     }
   };
 
@@ -106,8 +134,6 @@ export default function Login() {
             Log IN
           </button>
 
-          <p id="errorMessage">{errorMessage}</p>
-
           <div id="signUpSection">
             <h3>
               DON'T HAVE A USER? <br />
@@ -123,6 +149,16 @@ export default function Login() {
           </div>
         </div>
       </div>
+
+      <AuthModal
+        isOpen={modalOpen}
+        onClose={() => setModalOpen(false)}
+        title={modalTitle}
+        message={modalMessage}
+        confirmText="OK"
+        onConfirm={handleModalConfirm}
+        showSecondaryButton={false}
+      />
     </div>
   );
 }

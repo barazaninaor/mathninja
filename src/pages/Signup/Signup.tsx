@@ -82,11 +82,13 @@ export default function SignUp() {
           "Success",
           data.message || "User registered successfully!",
           () => {
-            // שמירת הטוקן מהשרת כדי שהמשחק לא יבקש התחברות מחדש
-            if (data.token) {
-              localStorage.setItem("token", data.token);
+            // שליפה גמישה של הטוקן מכל מבנה אפשרי שהשרת עשוי להחזיר
+            const serverToken = data.token || data.theToken || data.myToken;
+            if (serverToken) {
+              localStorage.setItem("token", serverToken);
             }
 
+            // שמירת אובייקט המשתמש או יצירתו באופן ידני לצורך הצגת השם ב-Navbar
             if (data.user) {
               localStorage.setItem("user", JSON.stringify(data.user));
             } else {

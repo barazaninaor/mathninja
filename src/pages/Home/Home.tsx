@@ -9,6 +9,15 @@ import "./Home.css";
 export function Home() {
   const navigate = useNavigate();
 
+  const handleTrainClick = () => {
+    const token = localStorage.getItem("token");
+    if (token) {
+      navigate("/game"); // אם המשתמש מחובר, ניכנס למשחק
+    } else {
+      navigate("/signin"); // אם המשתמש לא מחובר, נעביר אותו לעמוד ההתחברות
+    }
+  };
+
   return (
     <div className="home-container">
       <div className="home-content">
@@ -16,7 +25,7 @@ export function Home() {
         <SubTitle text="The Path to Multiplication Mastery" />
 
         <div className="home-buttons">
-          <PurpleButton text="Train" onClick={() => navigate("/game")} />
+          <PurpleButton text="Train" onClick={handleTrainClick} />
           <TransparentButton
             text="Create Account"
             onClick={() => navigate("/signup")}
