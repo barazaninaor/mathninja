@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
+import { HashRouter, Routes, Route, useLocation } from "react-router-dom";
 import { Home } from "../../pages/Home/Home";
 import Game from "../../pages/Game/Game";
 import { About } from "../../pages/About/About";
@@ -20,12 +20,11 @@ function ScrollToTop() {
 }
 
 /**
- * Router component for managing application navigation.
- * Automatically adjusts the basename depending on whether the app is running locally or in production (GitHub Pages).
+ * Router component for managing application navigation using HashRouter for GitHub Pages compatibility.
  */
 export function Router() {
   return (
-    <BrowserRouter basename="/mathninja">
+    <HashRouter>
       <ScrollToTop />
       <Navbar />
       <Routes>
@@ -37,7 +36,7 @@ export function Router() {
         <Route path="/profile" element={<Signup />} />
         <Route path="/signin" element={<Login />} />
       </Routes>
-    </BrowserRouter>
+    </HashRouter>
   );
 }
 

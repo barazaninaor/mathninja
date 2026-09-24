@@ -5,9 +5,17 @@ import { PurpleButton } from "../../components/PurpleButton/PurpleButton";
 import { TransparentButton } from "../../components/TransparentButton/TransparentButton";
 import { BenefitCard } from "../../components/BenefitCard/BenefitCard";
 import "./Home.css";
+import { useEffect } from "react";
 
 export function Home() {
   const navigate = useNavigate();
+
+  // Waking the server up
+  useEffect(() => {
+    fetch("https://mathninja-btcg.onrender.com/")
+      .then((res) => res.text())
+      .catch(() => {});
+  }, []);
 
   const handleTrainClick = () => {
     const token = localStorage.getItem("token");

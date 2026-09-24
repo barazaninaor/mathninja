@@ -14,6 +14,13 @@ export function Navbar() {
   const [isLoading, setIsLoading] = useState(false); // Controlled loading state
   const [isMenuOpen, setIsMenuOpen] = useState(false); // Mobile hamburger menu state
 
+  // Wake up the server immediately when the app/navbar first loads
+  useEffect(() => {
+    fetch("https://mathninja-btcg.onrender.com/")
+      .then((res) => res.text())
+      .catch(() => {});
+  }, []);
+
   // Update authentication state on route change without triggering full-screen loading
   useEffect(() => {
     const token = localStorage.getItem("token");
