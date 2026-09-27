@@ -15,12 +15,24 @@ export async function signUp(
   email: string,
   password: string,
 ) {
-  const response = await fetch(`${API_URL}/signUp`, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ fullName, email, password }),
-  });
-  const data = await response.json();
+  let response;
+  try {
+    response = await fetch(`${API_URL}/signUp`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ fullName, email, password }),
+    });
+  } catch {
+    throw new Error("Please try again in a few seconds, the server is loading");
+  }
+
+  let data;
+  try {
+    data = await response.json();
+  } catch {
+    throw new Error("Please try again in a few seconds, the server is loading");
+  }
+
   if (!response.ok) throw new Error(data.message || "Error registering user");
 
   if (data.token) {
@@ -31,12 +43,24 @@ export async function signUp(
 
 // 2. Sign In
 export async function signIn(email: string, password: string) {
-  const response = await fetch(`${API_URL}/signIn`, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ email, password }),
-  });
-  const data = await response.json();
+  let response;
+  try {
+    response = await fetch(`${API_URL}/signIn`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ email, password }),
+    });
+  } catch {
+    throw new Error("Please try again in a few seconds, the server is loading");
+  }
+
+  let data;
+  try {
+    data = await response.json();
+  } catch {
+    throw new Error("Please try again in a few seconds, the server is loading");
+  }
+
   if (!response.ok)
     throw new Error(data.message || "Invalid email or password");
 
@@ -48,24 +72,48 @@ export async function signIn(email: string, password: string) {
 
 // 3. Update Profile
 export async function updateProfile(fullName: string, password?: string) {
-  const response = await fetch(`${API_URL}/updateProfile`, {
-    method: "PUT",
-    headers: getAuthHeaders(),
-    body: JSON.stringify({ fullName, password }),
-  });
-  const data = await response.json();
+  let response;
+  try {
+    response = await fetch(`${API_URL}/updateProfile`, {
+      method: "PUT",
+      headers: getAuthHeaders(),
+      body: JSON.stringify({ fullName, password }),
+    });
+  } catch {
+    throw new Error("Please try again in a few seconds, the server is loading");
+  }
+
+  let data;
+  try {
+    data = await response.json();
+  } catch {
+    throw new Error("Please try again in a few seconds, the server is loading");
+  }
+
   if (!response.ok) throw new Error(data.message || "Failed to update profile");
   return data;
 }
 
 // 4. Delete Account
 export async function deleteAccount(password: string) {
-  const response = await fetch(`${API_URL}/deleteAccount`, {
-    method: "DELETE",
-    headers: getAuthHeaders(),
-    body: JSON.stringify({ password }),
-  });
-  const data = await response.json();
+  let response;
+  try {
+    response = await fetch(`${API_URL}/deleteAccount`, {
+      method: "DELETE",
+      headers: getAuthHeaders(),
+      body: JSON.stringify({ password }),
+    });
+  } catch {
+    throw new Error("Please try again in a few seconds, the server is loading");
+  }
+
+  let data;
+  try {
+    data = await response.json();
+  } catch {
+    throw new Error("Please try again in a few seconds, the server is loading");
+  }
+
   if (!response.ok) throw new Error(data.message || "Failed to delete account");
   return data;
 }
@@ -101,20 +149,50 @@ export async function getScores(
   return await response.json();
 }
 
-// 6. Save Game Result
+// 6. Save Game Result with automatic retry for Cold Starts
 export async function saveScore(
   correctAnswers: number,
   durationSeconds: number,
   levelId: number,
+  retries = 3,
+  delay = 3000,
 ) {
-  const response = await fetch(`${API_URL}/api/saveScore`, {
-    method: "POST",
-    headers: getAuthHeaders(),
-    body: JSON.stringify({ correctAnswers, durationSeconds, levelId }),
-  });
-  const data = await response.json();
-  if (!response.ok) throw new Error(data.message || "Error saving score");
-  return data;
+  try {
+    const response = await fetch(`${API_URL}/api/saveScore`, {
+      method: "POST",
+      headers: getAuthHeaders(),
+      body: JSON.stringify({ correctAnswers, durationSeconds, levelId }),
+    });
+
+    if (!response.ok) {
+      let errorMessage = "Error saving score";
+      try {
+        const errorData = await response.json();
+        errorMessage = errorData.message || errorMessage;
+      } catch {
+        errorMessage = `Server waking up or returned status ${response.status}`;
+      }
+      throw new Error(errorMessage);
+    }
+
+    return await response.json();
+  } catch (error) {
+    // אם נותרו נסיונות, נמתין מעט וננסה שוב (מצוין למקרה שהשרת ב-Render ב-Cold Start)
+    if (retries > 0) {
+      console.warn(
+        `Server might be waking up. Retrying saveScore in ${delay / 1000}s... (${retries} attempts left)`,
+      );
+      await new Promise((resolve) => setTimeout(resolve, delay));
+      return saveScore(
+        correctAnswers,
+        durationSeconds,
+        levelId,
+        retries - 1,
+        delay * 1.5,
+      );
+    }
+    throw error;
+  }
 }
 
 // Logout helper

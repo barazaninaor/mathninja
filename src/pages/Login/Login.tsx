@@ -62,6 +62,7 @@ export default function Login() {
     }
 
     try {
+      setIsLoading(true);
       const data = await signIn(emailInput, passwordInput);
       const token = data.theToken || data.myToken || data.token;
 
@@ -79,16 +80,16 @@ export default function Login() {
           );
         }
 
-        setIsLoading(true);
-
         // Delay navigation to showcase the neon loading overlay
         setTimeout(() => {
           navigate("/game");
         }, 3000);
       } else {
+        setIsLoading(false);
         throw new Error("No token received.");
       }
     } catch (err: any) {
+      setIsLoading(false);
       showAlert("Login Error", err.message || "Server error.");
     }
   };
