@@ -85,9 +85,20 @@ export async function getScores(
     method: "GET",
     headers: getAuthHeaders(),
   });
-  const data = await response.json();
-  if (!response.ok) throw new Error(data.message || "Error fetching scores");
-  return data;
+
+  // טיפול בטוח בשגיאות כאשר השרת ב-Render עדיין מתעורר ומחזיר HTML או סטטוס שגוי
+  if (!response.ok) {
+    let errorMessage = "Error fetching scores";
+    try {
+      const errorData = await response.json();
+      errorMessage = errorData.message || errorMessage;
+    } catch {
+      errorMessage = `Server waking up or returned status ${response.status}`;
+    }
+    throw new Error(errorMessage);
+  }
+
+  return await response.json();
 }
 
 // 6. Save Game Result
