@@ -66,9 +66,31 @@ export default function Scores() {
   const [sortDirection, setSortDirection] = useState<"asc" | "desc">("desc");
   const rowsPerPage = 10;
 
-  // Fetch scores whenever level, time filter, or custom dates change
+  // Fetch scores whenever level, time filter, or custom dates change + background retry every minute if data is empty
   useEffect(() => {
-    fetchScoresData();
+    let isMounted = true;
+    let intervalId: number | null = null;
+
+    const executeFetch = async () => {
+      const success = await fetchScoresData();
+      if (success && intervalId) {
+        clearInterval(intervalId);
+        intervalId = null;
+      }
+    };
+
+    executeFetch();
+
+    intervalId = window.setInterval(() => {
+      if (isMounted) {
+        executeFetch();
+      }
+    }, 60000);
+
+    return () => {
+      isMounted = false;
+      if (intervalId) clearInterval(intervalId);
+    };
   }, [currentLevel, currentTimeFilter, startDate, endDate]);
 
   // Calculate start and end date boundaries based on selected filter
@@ -87,11 +109,11 @@ export default function Scores() {
   };
 
   // Fetch real user score data from backend API
-  const fetchScoresData = async () => {
+  const fetchScoresData = async (): Promise<boolean> => {
     const token = localStorage.getItem("token");
     if (!token) {
       setShowAuthModal(true);
-      return;
+      return false;
     }
 
     const { start, end } = getDateRange();
@@ -99,12 +121,18 @@ export default function Scores() {
 
     try {
       const data = await getScores(levelId, start, end);
-      setFilteredData(Array.isArray(data) ? data : []);
-      setCurrentPage(1);
+      if (Array.isArray(data)) {
+        setFilteredData(data);
+        setCurrentPage(1);
+        return true;
+      }
+      return false;
     } catch (error) {
-      console.error("Failed to fetch scores from API:", error);
-      setFilteredData([]);
-      setCurrentPage(1);
+      console.warn(
+        "Server might still be waking up, will retry in 1 minute...",
+        error,
+      );
+      return false;
     }
   };
 
