@@ -9,6 +9,36 @@ function getAuthHeaders() {
   };
 }
 
+// פונקציית עזר לביצוע בקשות מאובטחות עם טיפול בטוקן פג תוקף / שגיאת הרשאה
+async function fetchWithAuth(url: string, options: RequestInit = {}) {
+  let response;
+  try {
+    response = await fetch(url, {
+      ...options,
+      headers: {
+        ...getAuthHeaders(),
+        ...(options.headers || {}),
+      },
+    });
+  } catch {
+    throw new Error("Please try again in a few seconds, the server is loading");
+  }
+
+  // אם השרת זורק 401 או 403 (טוקן פג תוקף או שגוי)
+  if (response.status === 401 || response.status === 403) {
+    // ניקוי מלא של הנתונים כדי למנוע מצב שקרי שהמשתמש מחובר
+    localStorage.removeItem("token");
+    localStorage.removeItem("user");
+
+    // רענון העמוד כדי לאפס את ה-UI ולהחזיר את המשתמש למסך ההתחברות
+    window.location.reload();
+
+    throw new Error("Session expired. Please log in again.");
+  }
+
+  return response;
+}
+
 // 1. Sign Up
 export async function signUp(
   fullName: string,
@@ -37,6 +67,9 @@ export async function signUp(
 
   if (data.token) {
     localStorage.setItem("token", data.token);
+    if (data.user) {
+      localStorage.setItem("user", JSON.stringify(data.user));
+    }
   }
   return data;
 }
@@ -66,28 +99,25 @@ export async function signIn(email: string, password: string) {
 
   if (data.token) {
     localStorage.setItem("token", data.token);
+    if (data.user) {
+      localStorage.setItem("user", JSON.stringify(data.user));
+    }
   }
   return data;
 }
 
 // 3. Update Profile
 export async function updateProfile(fullName: string, password?: string) {
-  let response;
-  try {
-    response = await fetch(`${API_URL}/updateProfile`, {
-      method: "PUT",
-      headers: getAuthHeaders(),
-      body: JSON.stringify({ fullName, password }),
-    });
-  } catch {
-    throw new Error("Please try again in a few seconds, the server is loading");
-  }
+  const response = await fetchWithAuth(`${API_URL}/updateProfile`, {
+    method: "PUT",
+    body: JSON.stringify({ fullName, password }),
+  });
 
   let data;
   try {
     data = await response.json();
   } catch {
-    throw new Error("Please try again in a few seconds, the server is loading");
+    data = {};
   }
 
   if (!response.ok) throw new Error(data.message || "Failed to update profile");
@@ -96,22 +126,16 @@ export async function updateProfile(fullName: string, password?: string) {
 
 // 4. Delete Account
 export async function deleteAccount(password: string) {
-  let response;
-  try {
-    response = await fetch(`${API_URL}/deleteAccount`, {
-      method: "DELETE",
-      headers: getAuthHeaders(),
-      body: JSON.stringify({ password }),
-    });
-  } catch {
-    throw new Error("Please try again in a few seconds, the server is loading");
-  }
+  const response = await fetchWithAuth(`${API_URL}/deleteAccount`, {
+    method: "DELETE",
+    body: JSON.stringify({ password }),
+  });
 
   let data;
   try {
     data = await response.json();
   } catch {
-    throw new Error("Please try again in a few seconds, the server is loading");
+    data = {};
   }
 
   if (!response.ok) throw new Error(data.message || "Failed to delete account");
@@ -129,12 +153,13 @@ export async function getScores(
   if (startDate) params.append("startDate", startDate);
   if (endDate) params.append("endDate", endDate);
 
-  const response = await fetch(`${API_URL}/api/scores?${params.toString()}`, {
-    method: "GET",
-    headers: getAuthHeaders(),
-  });
+  const response = await fetchWithAuth(
+    `${API_URL}/api/scores?${params.toString()}`,
+    {
+      method: "GET",
+    },
+  );
 
-  // טיפול בטוח בשגיאות כאשר השרת ב-Render עדיין מתעורר ומחזיר HTML או סטטוס שגוי
   if (!response.ok) {
     let errorMessage = "Error fetching scores";
     try {
@@ -158,9 +183,8 @@ export async function saveScore(
   delay = 3000,
 ) {
   try {
-    const response = await fetch(`${API_URL}/api/saveScore`, {
+    const response = await fetchWithAuth(`${API_URL}/api/saveScore`, {
       method: "POST",
-      headers: getAuthHeaders(),
       body: JSON.stringify({ correctAnswers, durationSeconds, levelId }),
     });
 
@@ -177,7 +201,7 @@ export async function saveScore(
 
     return await response.json();
   } catch (error) {
-    // אם נותרו נסיונות, נמתין מעט וננסה שוב (מצוין למקרה שהשרת ב-Render ב-Cold Start)
+    // אם נותרו נסיונות ויש שגיאת רשת/התעוררות (ולא שגיאת 401/403 שמופנית החוצה), נמתין וננסה שוב
     if (retries > 0) {
       console.warn(
         `Server might be waking up. Retrying saveScore in ${delay / 1000}s... (${retries} attempts left)`,
@@ -198,4 +222,5 @@ export async function saveScore(
 // Logout helper
 export function logout() {
   localStorage.removeItem("token");
+  localStorage.removeItem("user");
 }
