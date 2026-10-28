@@ -13,7 +13,6 @@ interface GamePlayProps {
   setUserGuess: (val: string | ((prev: string) => string)) => void;
   lastFeedback: string;
   checkAnswer: () => void;
-  finishGame: () => void;
   onRestart: () => void;
   startTime: number;
 }
@@ -25,7 +24,6 @@ export default function GamePlay({
   setUserGuess,
   lastFeedback,
   checkAnswer,
-  finishGame,
   onRestart,
   startTime,
 }: GamePlayProps) {
@@ -54,16 +52,12 @@ export default function GamePlay({
   useEffect(() => {
     const handleKeyPress = (e: KeyboardEvent) => {
       if (e.key === "Enter") {
-        if (currentIndex === exercises.length - 1) {
-          finishGame();
-        } else {
-          checkAnswer();
-        }
+        checkAnswer();
       }
     };
     window.addEventListener("keypress", handleKeyPress);
     return () => window.removeEventListener("keypress", handleKeyPress);
-  }, [currentIndex, exercises, finishGame, checkAnswer]);
+  }, [checkAnswer]);
 
   return (
     <div id="game-play-screen" style={{ width: "100%" }}>
@@ -160,7 +154,7 @@ export default function GamePlay({
             className="action-btn finish-btn"
             id="finishBtn"
             data-label="SHOW MY SCORE"
-            onClick={() => finishGame()}
+            onClick={checkAnswer}
           >
             SHOW MY SCORE
           </button>

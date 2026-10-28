@@ -53,7 +53,6 @@ export default function Game() {
   const [exercises, setExercises] = useState<Exercise[]>([]);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [correctAnswers, setCorrectAnswers] = useState(0);
-  const [baseScore, setBaseScore] = useState(100);
   const [startTime, setStartTime] = useState(0);
   const [userGuess, setUserGuess] = useState("");
   const [lastFeedback, setLastFeedback] = useState("");
@@ -81,7 +80,6 @@ export default function Game() {
     setExercises(newExercises);
     setCurrentIndex(0);
     setCorrectAnswers(0);
-    setBaseScore(100);
     setUserGuess("");
     setLastFeedback("");
     setStartTime(Date.now());
@@ -90,12 +88,9 @@ export default function Game() {
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
-  const finishGame = (
-    finalCorrect = correctAnswers,
-    currentBaseScore = baseScore,
-  ) => {
+  const finishGame = (finalCorrect = correctAnswers) => {
     const totalSeconds = Math.floor((Date.now() - startTime) / 1000);
-    handleGameEnd(finalCorrect, totalSeconds, currentBaseScore);
+    handleGameEnd(finalCorrect, totalSeconds);
   };
 
   const checkAnswer = () => {
@@ -106,10 +101,8 @@ export default function Game() {
     const correctAnswer = exercise.num1 * exercise.num2;
     const isCorrect = answer === correctAnswer;
     const nextCorrectAnswers = isCorrect ? correctAnswers + 1 : correctAnswers;
-    const nextBaseScore = isCorrect ? baseScore : baseScore - 3;
 
     setCorrectAnswers(nextCorrectAnswers);
-    setBaseScore(nextBaseScore);
     setLastFeedback(
       isCorrect
         ? "Correct!"
@@ -117,7 +110,7 @@ export default function Game() {
     );
 
     if (currentIndex === exercises.length - 1) {
-      finishGame(nextCorrectAnswers, nextBaseScore);
+      finishGame(nextCorrectAnswers);
       return;
     }
 
@@ -156,15 +149,15 @@ export default function Game() {
   const handleGameEnd = (
     finalCorrect: number,
     totalSeconds: number,
-    currentBaseScore: number,
   ) => {
     const minutes = Math.floor(totalSeconds / 60);
     const seconds = totalSeconds % 60;
     const durationStr = `${minutes}:${seconds.toString().padStart(2, "0")}`;
 
     const successRate = ((finalCorrect / 30) * 100).toFixed(2);
+    const baseScore = 100 - (30 - finalCorrect) * 3;
     const timePenalty = Math.max(0, (totalSeconds - 300) / 10);
-    const finalScore = Math.round(Math.max(0, currentBaseScore - timePenalty));
+    const finalScore = Math.round(Math.max(0, baseScore - timePenalty));
 
     setFinalStats({
       correctAnswers: finalCorrect,
@@ -220,7 +213,6 @@ export default function Game() {
             setUserGuess={setUserGuess}
             lastFeedback={lastFeedback}
             checkAnswer={checkAnswer}
-            finishGame={finishGame}
             onRestart={() => {
               setGameState("start");
               window.scrollTo({ top: 0, behavior: "smooth" });

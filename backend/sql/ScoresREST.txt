@@ -14,6 +14,7 @@ CREATE OR REPLACE FUNCTION sp_get_player_scores(
 RETURNS TABLE (
     date VARCHAR,
     duration VARCHAR,
+    correct_answers INT,
     success_rate INT,
     score INT
 ) AS $$
@@ -26,18 +27,18 @@ BEGIN
         -- Format duration seconds to MM:SS
         LPAD((duration_seconds / 60)::TEXT, 2, '0') || ':' || 
         LPAD((duration_seconds % 60)::TEXT, 2, '0') AS duration,
+
+        correct_answers::INT AS correct_answers,
         
         -- Calculate success rate percentage
         ROUND((correct_answers::FLOAT / 30.0) * 100)::INT AS success_rate,
         
-        -- Calculate score with time penalty adjustments
-        CASE 
-            WHEN (100 - ((30 - correct_answers) * 3) - 
-                  CASE WHEN duration_seconds > 300 THEN (duration_seconds - 300) / 10 ELSE 0 END) < 10 
-            THEN 10 
-            ELSE (100 - ((30 - correct_answers) * 3) - 
-                  CASE WHEN duration_seconds > 300 THEN (duration_seconds - 300) / 10 ELSE 0 END)
-        END::INT AS score
+        -- Match the game-end score: fractional time penalty, rounded, with a zero minimum
+        ROUND(GREATEST(
+            0,
+            100 - ((30 - correct_answers) * 3) -
+                GREATEST(0, (duration_seconds - 300)::NUMERIC / 10)
+        ))::INT AS score
 
     FROM game_results
     WHERE user_id = p_user_id 

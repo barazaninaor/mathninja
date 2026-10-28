@@ -66,17 +66,17 @@ async function spGetPlayerScores(userId, levelId, startDate, endDate) {
     const seconds = duration % 60;
     const durationDisplay = `${minutes}:${seconds.toString().padStart(2, "0")}`;
 
-    // Calculate final score based on correct answers and time penalties
-    let finalScore = 100 - (30 - correct) * 3;
-    if (duration > 300) {
-      finalScore -= Math.floor((duration - 300) / 10);
-    }
+    const timePenalty = Math.max(0, (duration - 300) / 10);
+    const finalScore = Math.round(
+      Math.max(0, 100 - (30 - correct) * 3 - timePenalty),
+    );
 
     return {
       DATE: new Date(row.played_at).toLocaleDateString("en-GB"), // Format: DD/MM/YYYY
       DURATION: durationDisplay, // Formatted time string
       SUCCESS_RATE: Math.round((correct / 30) * 100), // Success percentage
-      SCORE: Math.max(10, finalScore), // Ensure score doesn't drop below minimum
+      CORRECT_ANSWERS: correct,
+      SCORE: finalScore,
     };
   });
 }
